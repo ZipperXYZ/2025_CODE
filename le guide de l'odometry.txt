@@ -1,0 +1,145 @@
+Tl = distance entre le millieux et le left tracking wheel = 7.250 inch
+Tr = distance entre le millieux et le right tracking wheel = 7.250 inch
+Ts = distance entre la roue qui mesure la distance du pousser de coter = 7.750 inch
+
+le millieux et les 2 roue (droite et gauche) passe dans un arc (le left arc, right arc et lui du millieux)
+si le robot suis un chemin avec un arc de 15 degrées alors la nouvelle orientation du robot va être de 15 degrées.
+
+Nous allons faire comme si l'arc droit est de 13.810 degrées et selui de droit 17.606
+
+Nous allons utiisé la formule pour calculer le longueur d'un arc dans un cercle:
+
+r = rayon
+theta = angle du robot en radians (radians à degrées = radians * 180/pi = degrées)
+ 
+1) s = r * theta
+
+les 2 arc (droit et gauche) ont le même angle d'arc car il sont concentrique se qui veux dire qu'il ont le même centre du cercle. Il ont juste un rayon différent.
+
+Dl = distance parcourue par la roue de tracking gauche (donc la longeurs de l'arc) = 17.606 inches
+Dr = distance parcourue par la roue de tracking droite = 13.810 inches
+Ds = distance parcourue par la roue de tracking de coté = 13.810 inches
+
+nous savons que la longeur de l'arc est = à Dl = r * theta (nous avons remplacé le s avec la variable de la distance parcourue par la roue de tracking gauche car elle est équivalente)
+
+le rayon (r) pour la roue de gauche est égal à la distance entre le millieux et la roue de tracking gauche (Tl) + le rayon de l'arc du centre du robot
+
+donc Dl = (R + Tl) * thetea ( le grand R est = à le rayon du cercle que cause le déplacement du robot )
+
+pour la roue de tracking droite c'est la même choses mais la seule différence est que â la place nous allons faire une soustraction donc: Dr = (R - Tr) * thetea
+
+Donc nous pouvons faire cette équation pour isoler la variable du R qui nous est inconnue:
+
+Dl/thetea = (R + Tl) * thetea    /     Dr/thetea = (R - Tr) * thetea 
+
+Dl/thetea = (R + Tl) * thetea 	       Dr/thetea = (R - Tr) * thetea
+		-Tl                                    +Tr
+Dl/thetea - Tl = R		       Dr/thetea + Tr = R
+
+Après cela, nous pouvons calculer l'angle du robot en fesant en isolant encore.:
+
+Dl/thetea - Tl = Dr/thetea + Tr
+* thetea	 * thetea
+
+Dl - Tl * thetea = Dr + Tr * thetea
+-Dr + Tl * thetea  -Dr + Tl * thetea 
+
+Dl - Dr = Tr * thetea + Tl * thetea
+
+Dl - Dr = thetea * (Tl + Tr)
+
+(Dl - Dr) = thetea * (Tl + Tr) 
+/(Tl + Tr)	   / (Tl + Tr) 
+
+(Dl - Dr) / (Tl + Tr) = thetea
+
+
+Testons cela avec un calcul simple: 
+
+thetea = (Dl - Dr)/(Tl + Tr)
+
+thetea = (17.606 - 13.810) / (7.250 + 7.250)
+
+thetea = 3.796 / 14.5
+
+thetea = 0.261793103 (EN RADIANS!!!!)
+
+thetea = 0.261793103 * 180/pi = 14.999639907533652 degrées
+
+thetea est environs = à 15 degrées
+
+Nous avons donc calculer l'orientation du robot grâce a deux roues de tracking!!!
+
+---------------------------------------------------------------------------------------
+
+Donc maintenant pour calculer la position en X et Y du robot (la position en vecteur)
+
+
+
+
+Donc pour commencer, nous allons calculer la position du robot en Y.
+
+Avec la position dans lequelle le robot à bougé, sa position avant et le point central de l'arc du robot,
+nous pouvons créé un triangle isocèle. nous pouvons donc utilisé la lois des cosinus pour pouvoir trouvé la position en Y du robot
+
+2) c^2 = a^2 + b^2 - 2 * a * b * cos(C)
+
+À cause que nous savons l'angle du robot grâce à la formule pour trouvé l'angle (thetea = (Dl - Dr)/(Tl + Tr))
+,ou sois grâce à un gyroscope (inertial)
+
+Dans la lois des cosinus, la valeurs que nous cherchons est le "c" car c'est celle valeur que le y est égal à.
+
+Nous pouvons donc calculer le "a" et le "b" dans le triangle à cause que le a et le b sont égal aux rayon de l'arc dans lequelle le robot est (le R)
+
+Dr = r * thetea
+
+r =  Dr/thetea
+
+R = (Dr/thetea) + Tr
+
+après avoir remplacé les valeurs dans la lois des cosinus:
+
+y^2 = R^2 + R^2 - 2 * R ^ 2 * cos(thetea)
+		|
+	  factorisation
+		|
+y^2 = 2 * R ^2(1 - cos (thetea))
+
+
+nous pouvons alors utilisé la formule de demi angle pour manipulé notre formule que nous avons trouvé au dessus
+
+3) sin(thetea/2) = sqrt((1-cos(thetea)/2)
+
+factorisons alors un 2 de notre équation 
+
+y^2 = 4 * R ^2(1 - cos (thetea)/2)
+		|
+	  racine carré
+		|
+y = 2R(sqrt((1-cos(thetea))/2)
+
+  simplification avec l'identité
+
+y = 2R(sin(thetea/2))
+
+      replacement du rayon (R)
+
+y = 2 * ((Dr/thetea)/Tr) * (sin(thetea/2)
+
+
+Maintenant il faut calculer la position en X du robot. Si le robot dévirait de sa position dans laquelle il devait aller. (par exemple si il se fait pousser)
+il faudras alors savoir ou le robot c'est fait pousser. Si le robot ce fait poussé de coter, la roue qui traque les mouvement de coté va alors formé un arc se qui veut dire que la
+formule est la même avec la seule différence que à la place de Dr et Tr, ça serais Ts et Ds
+
+x = 2 * ((Ds/thetea)/Ts) * (sin(thetea/2)
+
+
+Et voilà, nous avons maintenant de l'odometry! merci â cette video: https://www.youtube.com/watch?v=qqODIdvSGac pour la fabuleuse explication!
+
+
+
+Document écrit par ZipperXYZ de 74947X
+
+
+
+ 
