@@ -17,13 +17,12 @@
 		{
 			"name": "Win32",
 			"includePath": [
-				"${vex_sdkIncludes}",
-				"${workspaceFolder}/include"
+				"${vex_sdkIncludes}"
 			],
 			"compilerPath": "${vex_compilerPath}",
 			"cStandard": "gnu99",
 			"cppStandard": "gnu++11",
-			"intelliSenseMode": "windows-clang-x86"
+			"intelliSenseMode": "windows-clang-x64"
 		},
 		{
 			"name": "Mac",
