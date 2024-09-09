@@ -43,6 +43,17 @@ struct Drive_train
 
     double X_Position;
     double Y_Position;
+    
+    double TF = 4;
+    double TS = 2;
+
+    double DistForwTrack;
+    double DistSideTrack;
+
+    double RayonForw;
+    double RayonSide;
+
+    double WheelDiameter;
 
 
     private:

@@ -3,6 +3,8 @@
 #include "Drive_train.h"
 #include "MiniPID.h"
 #include "robot-config.h"
+#include <cmath>
+#include "util.h"
 
 using namespace vex;
 
@@ -16,9 +18,9 @@ double ComputeAverageDistance(){
 
 bool Drive_train::IsSettled(double Value){
     if (Value > ErrorThreshold) {
-        return true;
-    } else {
         return false;
+    } else {
+        return true;
     }
 }
 
@@ -39,20 +41,39 @@ void Drive_train::Init()
 
 }
 
+// the main updte fonction containing odometry and other stuff
+
 void Drive_train::Update(){
 
     InertialAverage = Inertial1.rotation(degrees);
 
+    DistForwTrack = (FowardEncoder.position(degrees)/360) * (WheelDiameter * M_PI);
+    DistSideTrack = (SideEncoder.position(degrees)/360) * (WheelDiameter * M_PI);
+
+    RayonForw = (DistForwTrack/InertialAverage) + TF;
+    RayonSide = (DistSideTrack/InertialAverage) + TS;
     
+    if (InertialAverage == 0) {
+
+        Y_Position = DistForwTrack + TF;
+        X_Position = DistSideTrack + TS;
+
+    } else {
+
+        Y_Position += 2 * RayonForw * (sin(to_rad(InertialAverage/2)));
+        X_Position += 2 * RayonSide * (sin(to_rad(InertialAverage/2)));
+
+    }
+
 }
 
 int Drive_train::movefor(double Degree)
 {
     double AverageDistance = ComputeAverageDistance();
     double EndPoint = AverageDistance + Degree;
-    Brain.Screen.print("%f",ComputeError(AverageDistance,Degree));
+    Brain.Screen.print("%f",std::abs(ComputeError(AverageDistance,Degree)));
 
-    while (IsSettled(abs(ComputeError(AverageDistance,Degree)) == false)){
+    while (IsSettled(std::abs((ComputeError(AverageDistance,Degree))) == false)){
         
         AverageDistance = ComputeAverageDistance();
         

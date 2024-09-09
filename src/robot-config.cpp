@@ -25,6 +25,9 @@ Drive_train DriveX = Drive_train(1,2,3,4,5,6);
 inertial Inertial1 = inertial(PORT15);
 inertial Inertial2 = inertial(PORT16);
 
+rotation FowardEncoder = rotation(PORT1);
+rotation SideEncoder = rotation(PORT2);
+
 // VEXcode generated functions
 
 

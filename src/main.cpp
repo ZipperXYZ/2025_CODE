@@ -23,8 +23,16 @@
 
 using namespace vex;
 
+int update(){
+  while (true) {
+    DriveX.Update();
+    wait(20,msec);
+  }
+}
+
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
-  DriveX.movefor(335);
+  task upd(update);
+  DriveX.movefor(332);
 }

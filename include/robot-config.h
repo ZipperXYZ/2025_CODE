@@ -17,6 +17,8 @@ extern Drive_train DriveX;
 
 extern inertial Inertial1;
 extern inertial Inertial2;
+extern rotation FowardEncoder;
+extern rotation SideEncoder;
 
 
 /**
