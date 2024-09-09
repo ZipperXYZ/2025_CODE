@@ -59,6 +59,5 @@ int Drive_train::movefor(double Degree)
         double Output = DrivePID.getOutput(AverageDistance,EndPoint);
         Spin(Output);
     }
-
     return 1;
 }
