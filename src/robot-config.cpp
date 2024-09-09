@@ -5,9 +5,7 @@ using signature = vision::signature;
 using code = vision::code;
 
 // A global instance of brain used for printing to the V5 Brain screen
-// test on m new pc 
-// comit
-brain Brain;
+brain  Brain;
 
 // VEXcode device constructors
 motor leftMotorA = motor(PORT1, ratio18_1, false);
@@ -22,6 +20,10 @@ gyro TurnGyroSmart = gyro(Brain.ThreeWirePort.D);
 smartdrive Drivetrain= smartdrive(LeftDriveSmart, RightDriveSmart, TurnGyroSmart, 319.19, 320, 165, mm, 1);
 motor ClawMotor = motor(PORT3, ratio18_1, false);
 motor ArmMotor = motor(PORT8, ratio18_1, false);
+Drive_train DriveX = Drive_train(1,2,3,4,5,6);
+
+inertial Inertial1 = inertial(PORT15);
+inertial Inertial2 = inertial(PORT16);
 
 // VEXcode generated functions
 
