@@ -8,25 +8,27 @@ using code = vision::code;
 brain  Brain;
 
 // VEXcode device constructors
-motor leftMotorA = motor(PORT1, ratio18_1, false);
-motor leftMotorB = motor(PORT10, ratio18_1, false);
-motor_group LeftDriveSmart = motor_group(leftMotorA, leftMotorB);
+motor leftMotorA = motor(PORT5, ratio18_1, false);
+motor leftMotorB = motor(PORT4, ratio18_1, true);
+motor leftMotorC = motor(PORT3, ratio18_1, true); 
+motor_group LeftDriveSmart = motor_group(leftMotorA, leftMotorB,leftMotorC);
 
-motor rightMotorA = motor(PORT11, ratio18_1, true); 
-motor rightMotorB = motor(PORT20, ratio18_1, true); 
-motor_group RightDriveSmart = motor_group(rightMotorA, rightMotorB);
+motor rightMotorA = motor(PORT6, ratio18_1, true); 
+motor rightMotorB = motor(PORT2, ratio18_1, false); 
+motor rightMotorC = motor(PORT1, ratio18_1, false); 
+motor_group RightDriveSmart = motor_group(rightMotorA, rightMotorB,rightMotorC);
 
 gyro TurnGyroSmart = gyro(Brain.ThreeWirePort.D);
 smartdrive Drivetrain= smartdrive(LeftDriveSmart, RightDriveSmart, TurnGyroSmart, 319.19, 320, 165, mm, 1);
-motor ClawMotor = motor(PORT3, ratio18_1, false);
 motor ArmMotor = motor(PORT8, ratio18_1, false);
-Drive_train DriveX = Drive_train(1,2,3,4,5,6);
+Drive_train DriveX = Drive_train(0.01,0,0,1,0,0);
 
-inertial Inertial1 = inertial(PORT15);
+inertial Inertial1 = inertial(PORT9);
 inertial Inertial2 = inertial(PORT16);
 
-rotation FowardEncoder = rotation(PORT1);
-rotation SideEncoder = rotation(PORT2);
+rotation FowardEncoder = rotation(PORT7);
+rotation SideEncoder = rotation(PORT12);
+controller Controller = controller();
 
 // VEXcode generated functions
 

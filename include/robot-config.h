@@ -9,7 +9,11 @@ extern motor ClawMotor;
 extern motor ArmMotor;
 
 extern motor leftMotorA;
+extern motor leftMotorB;
+extern motor leftMotorC;
 extern motor rightMotorA;
+extern motor rightMotorB;
+extern motor rightMotorC;
 
 extern motor_group LeftDriveSmart;
 extern motor_group RightDriveSmart;
@@ -19,6 +23,7 @@ extern inertial Inertial1;
 extern inertial Inertial2;
 extern rotation FowardEncoder;
 extern rotation SideEncoder;
+extern controller Controller;
 
 
 /**

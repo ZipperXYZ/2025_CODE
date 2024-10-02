@@ -19,48 +19,63 @@ struct Drive_train
 {
     // Initializer
 
-    Drive_train(double p, double i, double d, double pt, double it, double dt); // "p" = le p de la pid pour avancer. "pt" = le p de la pid pour tourner  : DrivePID(p,i,d), TurnPID(pt,it,dt) {};
+    Drive_train(float p, float i, float d, float pt, float it, float dt); // "p" = le p de la pid pour avancer. "pt" = le p de la pid pour tourner  : DrivePID(p,i,d), TurnPID(pt,it,dt) {};
 
     // Function
 
     void Init();
-    int movefor(double Degree);
+
+    int movefor(float Degree);
+    int moveto(float X_Final,float Y_Final);
+    int turnto(float angle);
 
     void Update();
 
     // Variable
 
-    double ErrorThreshold = 1;
+    float ErrorThreshold = 1;
     
-    double p = 0;
-    double i = 0;
-    double d = 0;
-    double pt = 0;
-    double it = 0;
-    double dt = 0;
+    float p = 0;
+    float i = 0;
+    float d = 0;
+    float pt = 0;
+    float it = 0;
+    float dt = 0;
     
-    double InertialAverage;
+    float InertialAverage;
 
-    double X_Position;
-    double Y_Position;
-    
-    double TF = 4;
-    double TS = 2;
+    float Local_X_Position;
+    float Local_Y_Position;
+    float X_Position = 0;
+    float Y_Position = 0;
 
-    double DistForwTrack;
-    double DistSideTrack;
+    float TF = -2.25;
+    float TS = -2.75;
 
-    double RayonForw;
-    double RayonSide;
+    float DistForwTrack;
+    float DistSideTrack;
+    float PrevDistForwTrack = 0;
+    float PrevDistSideTrack = 0;
+    float ChangeDistForwTrack;
+    float ChangeDistSideTrack;
 
-    double WheelDiameter;
+    float RayonForw;
+    float RayonSide;
+
+    float AbsoluteAngle_Rad;
+    float PrevAngle_Rad = 0;
+    float ChangeAngle_Rad;
+
+    float WheelDiameter = 2.75;
+
+    float Test = 0;
 
 
     private:
         MiniPID DrivePID;
         MiniPID TurnPID;
     
-        bool IsSettled(double Value);
+        bool IsSettled(float Value);
 };
 
 #endif
