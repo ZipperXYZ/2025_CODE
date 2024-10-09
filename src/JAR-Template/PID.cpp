@@ -124,11 +124,14 @@ float PID::compute(float error){
 
 bool PID::is_settled(){
   if (time_spent_running>timeout && timeout != 0){
+    printf("return true");
     return(true);
   } // If timeout does equal 0, the move will never actually time out. Setting timeout to 0 is the 
     // equivalent of setting it to infinity.
   if (time_spent_settled>settle_time){
+    printf("return true");
     return(true);
   }
+  printf("ran");
   return(false);
 }

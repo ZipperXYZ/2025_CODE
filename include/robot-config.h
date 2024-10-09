@@ -25,6 +25,12 @@ extern rotation FowardEncoder;
 extern rotation SideEncoder;
 extern controller Controller;
 
+extern motor Intake;
+extern motor MoteurBras;
+
+extern digital_out PneumaBras;
+extern digital_out But;
+
 
 /**
  * Used to initialize code/tasks/sdevices added using tools in VEXcode Pro.

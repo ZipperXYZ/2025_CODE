@@ -59,10 +59,10 @@ TANK_TWO_ROTATION,
 //You will input whatever motor names you chose when you configured your robot using the sidebar configurer, they don't have to be "Motor1" and "Motor2".
 
 //Left Motors:
-motor_group(),
+motor_group(rightMotorA,rightMotorB,rightMotorC),
 
 //Right Motors:
-motor_group(),
+motor_group(leftMotorA,leftMotorB,leftMotorC),
 
 //Specify the PORT NUMBER of your inertial sensor, in PORT format (i.e. "PORT1", not simply "1"):
 PORT9,
@@ -121,11 +121,22 @@ PORT12,
 );
 
 bool AutoEnabled = false;
+bool BrasUp = false;
 
 void autoTest(){
 }
 
 void Driver(){
+}
+
+void ButtonR1Pressed(){
+  if (BrasUp) {
+    MoteurBras.spin(forward);
+    Intake.stop();
+  } else {
+    MoteurBras.spin(forward);
+    Intake.spin(forward);
+  }
 }
 
 int position_track_task(){
@@ -136,6 +147,8 @@ int position_track_task(){
 // la fonction update sert a updater toute les choses qui ont besoin d'être update en temps réelle.
 // elle update (si le mode autonome est activé) l'odometry du robot (la position en X et Y)
 // sinon elle va update les controlles du robot (les joystick et etc)
+
+double Deadband = 20;
 
 int update(){
   while (true) {
@@ -150,8 +163,31 @@ int update(){
       if (Competition.isAutonomous()) {
 
       } else {
-        int LeftVelocity = Controller.Axis3.position();
-        int RightVelocity = Controller.Axis2.position();
+
+        bool ButtonBrasPressed = Controller.ButtonR1.pressing();
+
+        if (BrasUp && ButtonBrasPressed) {
+          MoteurBras.spin(forward);
+          Intake.stop();
+        } else if (ButtonBrasPressed) {
+          MoteurBras.spin(forward);
+          Intake.spin(forward);
+        } else {
+          MoteurBras.stop();
+          Intake.stop();
+        }
+
+        int LeftVelocity = Controller.Axis3.position(); //+ Controller.Axis1.position() * 2;
+        int RightVelocity = Controller.Axis2.position();// - Controller.Axis1.position() * 2;
+       
+        if (abs(RightVelocity) < Deadband ) {
+          RightVelocity = 0;
+        }
+
+        if (abs(LeftVelocity) < Deadband ) {
+          LeftVelocity = 0;
+        }
+        
         LeftDriveSmart.setVelocity(LeftVelocity,percent);
         RightDriveSmart.setVelocity(RightVelocity,percent);
         RightDriveSmart.spin(forward);
@@ -162,6 +198,17 @@ int update(){
   }
 }
 
+void AutoTest1(){
+  chassis.set_coordinates(0,0,0);
+  chassis.set_heading_constants(7,0.5,0.01,1.5,20);
+  chassis.set_drive_constants(10,0.55,0.0125,2.5,3);
+  chassis.set_drive_exit_conditions(0.5,200,4000);
+  chassis.drive_timeout = 3000;
+  chassis.drive_to_pose(24,48,0);
+  chassis.turn_to_angle(90);
+  //chassis.drive_distance(12);
+}
+
 // la fonction main qui gère: le reset des encodeur, les 2 fonction de competition et la tache d'update
 
 int main() {
@@ -169,9 +216,17 @@ int main() {
   vexcodeInit();
   FowardEncoder.resetPosition();
   SideEncoder.resetPosition();
-  Competition.autonomous(autoTest); // les 2 template de compétition
+  Competition.autonomous(AutoTest1); // les 2 template de compétition
   Competition.drivercontrol(Driver);
+  chassis.set_drive_constants(10,1,0.01,0.01,3);
+  chassis.set_turn_constants(7,0.14,0.005,1.25,9);
+  chassis.DriveL.resetPosition();
+  chassis.DriveR.resetPosition();
   task upd(update);
   task updo(position_track_task);
+  while (chassis.Gyro.isCalibrating())
+  {
+    wait(20,msec);
+  }
   //DriveX.movefor(24);
 }
