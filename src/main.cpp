@@ -123,20 +123,51 @@ PORT12,
 bool AutoEnabled = false;
 bool BrasUp = false;
 
-void autoTest(){
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+double TurnConstant = 1.5; // la distance en degrées que le moteur du bras va tourné
+double TurnPerTurn = 6; // the number of turn it takes for the motor to do 1 full revolution of the conveyor
+
+int SelectedAuto = -1; // bro si tu comprend pas ça ya des problème
+int NbOfAuto = 2;
+
+double Deadband = 20; // controller deadband
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// tout ce que les boutton font
+
+void ButtonUpPressed(){
+  MoteurBras.spinToPosition(MoteurBras.position(turns) + TurnConstant,turns,true);
 }
 
-void Driver(){
+void ButtonDownPressed() {
+  MoteurBras.spinToPosition(round(MoteurBras.position(turns))/TurnPerTurn,turns);
 }
 
-void ButtonR1Pressed(){
-  if (BrasUp) {
-    MoteurBras.spin(forward);
+void ButtonR1Released(){
+  MoteurBras.stop();
+  Intake.stop();
+}
+
+void ButtonR2Pressed(){
+  double value = !PneumaBras.value();
+  PneumaBras.set(value);
+  BrasUp = value;
+
+  
+  if (BrasUp){
     Intake.stop();
-  } else {
-    MoteurBras.spin(forward);
-    Intake.spin(forward);
   }
+}
+
+void ButtonL1Pressed(){
+  PneumaBut.set(!PneumaBut.value());
+}
+
+void ButtonL2Released(){
+  MoteurBras.stop();
 }
 
 int position_track_task(){
@@ -148,12 +179,9 @@ int position_track_task(){
 // elle update (si le mode autonome est activé) l'odometry du robot (la position en X et Y)
 // sinon elle va update les controlles du robot (les joystick et etc)
 
-double Deadband = 20;
-
-int update(){
+void update(){
   while (true) {
     if (Inertial1.isCalibrating() == false){
-      //DriveX.Update();
       Brain.Screen.setCursor(2, 1);
       Brain.Screen.print("X pos: %f",chassis.get_X_position());
       Brain.Screen.setCursor(3, 1);
@@ -165,16 +193,17 @@ int update(){
       } else {
 
         bool ButtonBrasPressed = Controller.ButtonR1.pressing();
+        bool ButtonSpinBrasPressed = Controller.ButtonL2.pressing();
 
         if (BrasUp && ButtonBrasPressed) {
           MoteurBras.spin(forward);
-          Intake.stop();
         } else if (ButtonBrasPressed) {
           MoteurBras.spin(forward);
           Intake.spin(forward);
-        } else {
-          MoteurBras.stop();
-          Intake.stop();
+        }
+
+        if (ButtonSpinBrasPressed) {
+          MoteurBras.spin(forward);
         }
 
         int LeftVelocity = Controller.Axis3.position(); //+ Controller.Axis1.position() * 2;
@@ -198,15 +227,32 @@ int update(){
   }
 }
 
-void AutoTest1(){
+void BrainPressed(){
+
+  SelectedAuto += 1;
+  
+  if (SelectedAuto > NbOfAuto) {
+    SelectedAuto = 0;
+  }
+
+  switch (SelectedAuto){
+  case 0:
+    Brain.Screen.printAt(4,50,"Selected Auto1");
+    break;
+  case 1:
+    Brain.Screen.printAt(4,50,"Selected Auto2");
+    break;
+  default:
+    break;
+  }
+}
+
+void Autonomous(){
+
+}
+
+void PreAuto(){
   chassis.set_coordinates(0,0,0);
-  chassis.set_heading_constants(7,0.5,0.01,1.5,20);
-  chassis.set_drive_constants(10,0.55,0.0125,2.5,3);
-  chassis.set_drive_exit_conditions(0.5,200,4000);
-  chassis.drive_timeout = 3000;
-  chassis.drive_to_pose(24,48,0);
-  chassis.turn_to_angle(90);
-  //chassis.drive_distance(12);
 }
 
 // la fonction main qui gère: le reset des encodeur, les 2 fonction de competition et la tache d'update
@@ -216,13 +262,39 @@ int main() {
   vexcodeInit();
   FowardEncoder.resetPosition();
   SideEncoder.resetPosition();
-  Competition.autonomous(AutoTest1); // les 2 template de compétition
-  Competition.drivercontrol(Driver);
+  Competition.autonomous(Autonomous); // les 2 template de compétition
+  Competition.drivercontrol(update);
+
+  // les controle
+
+  Controller.ButtonR2.pressed(ButtonR2Pressed);
+  Controller.ButtonL1.pressed(ButtonL1Pressed);
+  Controller.ButtonUp.pressed(ButtonUpPressed);
+  Controller.ButtonDown.pressed(ButtonDownPressed);
+  Brain.Screen.pressed(BrainPressed);
+
+  Controller.ButtonR1.released(ButtonR1Released);
+  Controller.ButtonL2.released(ButtonL2Released);
+
+  // odometry stuff and PID
+
   chassis.set_drive_constants(10,1,0.01,0.01,3);
   chassis.set_turn_constants(7,0.14,0.005,1.25,9);
+  chassis.set_heading_constants(7,0.5,0.01,1.5,20);
+  chassis.set_drive_constants(10,0.55,0.0125,2.5,3);
+  chassis.set_drive_exit_conditions(0.5,200,4000);
+
+  chassis.drive_timeout = 3000;
+
   chassis.DriveL.resetPosition();
   chassis.DriveR.resetPosition();
-  task upd(update);
+
+  // speed
+
+  MoteurBras.setVelocity(100,percent);
+  Intake.setVelocity(100,percent);
+
+  //task upd(update);
   task updo(position_track_task);
   while (chassis.Gyro.isCalibrating())
   {

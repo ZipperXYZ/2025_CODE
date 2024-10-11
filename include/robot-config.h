@@ -29,7 +29,7 @@ extern motor Intake;
 extern motor MoteurBras;
 
 extern digital_out PneumaBras;
-extern digital_out But;
+extern digital_out PneumaBut;
 
 
 /**

@@ -10,7 +10,7 @@ brain  Brain;
 // VEXcode device constructors
 motor leftMotorA = motor(PORT5, ratio18_1, false); // false
 motor leftMotorB = motor(PORT4, ratio18_1, true); // true
-motor leftMotorC = motor(PORT3, ratio18_1, true);  // true
+motor leftMotorC = motor(PORT14, ratio18_1, true);  // true
 motor_group LeftDriveSmart = motor_group(leftMotorA, leftMotorB,leftMotorC);
 
 motor rightMotorA = motor(PORT6, ratio18_1, true); // true
@@ -29,11 +29,11 @@ rotation FowardEncoder = rotation(PORT7);
 rotation SideEncoder = rotation(PORT12);
 controller Controller = controller();
 
-motor Intake = motor(PORT16,ratio36_1,false);
+motor Intake = motor(PORT15,ratio36_1,false);
 motor MoteurBras = motor(PORT17,ratio36_1,false);
 
-digital_out PneumaBras = digital_out(Brain.ThreeWirePort.A);
-digital_out But = digital_out(Brain.ThreeWirePort.A);
+digital_out PneumaBras = digital_out(Brain.ThreeWirePort.C);
+digital_out PneumaBut = digital_out(Brain.ThreeWirePort.D);
 // VEXcode generated functions
 
 
