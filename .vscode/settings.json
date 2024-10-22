@@ -39,6 +39,7 @@
         "streambuf": "cpp",
         "tuple": "cpp",
         "utility": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "bitset": "cpp"
     }
 }

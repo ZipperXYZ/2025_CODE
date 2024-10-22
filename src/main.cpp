@@ -31,6 +31,7 @@
 #include "vex_triport.h"
 #include <ostream>
 #include <string>
+#include <autons.h>
 
 using namespace vex;
 
@@ -59,10 +60,10 @@ TANK_TWO_ROTATION,
 //You will input whatever motor names you chose when you configured your robot using the sidebar configurer, they don't have to be "Motor1" and "Motor2".
 
 //Left Motors:
-motor_group(rightMotorA,rightMotorB,rightMotorC),
+motor_group(leftMotorA,leftMotorB,leftMotorC),
 
 //Right Motors:
-motor_group(leftMotorA,leftMotorB,leftMotorC),
+motor_group(rightMotorA,rightMotorB,rightMotorC),
 
 //Specify the PORT NUMBER of your inertial sensor, in PORT format (i.e. "PORT1", not simply "1"):
 PORT9,
@@ -102,7 +103,7 @@ PORT3,     -PORT4,
 PORT7,
 
 //Input the Forward Tracker diameter (reverse it to make the direction switch):
--2.75,
+2.75,
 
 //Input Forward Tracker center distance (a positive distance corresponds to a tracker on the right side of the robot, negative is left.)
 //For a zero tracker tank drive with odom, put the positive distance from the center of the robot to the right side of the drive.
@@ -120,6 +121,10 @@ PORT12,
 
 );
 
+int current_auton_selection = 0;
+bool auto_started = false;
+
+
 bool AutoEnabled = false;
 bool BrasUp = false;
 
@@ -135,25 +140,32 @@ double Deadband = 20; // controller deadband
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
 // tout ce que les boutton font
+
+// le bras tourne de 1 position de crochet
 
 void ButtonUpPressed(){
   MoteurBras.spinToPosition(MoteurBras.position(turns) + TurnConstant,turns,true);
 }
 
+// le bras retourne à la position de départ
+
 void ButtonDownPressed() {
   MoteurBras.spinToPosition(round(MoteurBras.position(turns))/TurnPerTurn,turns);
 }
+
+// stop les moteur du bras et de l'intake quand le boutton r1 est relaché
 
 void ButtonR1Released(){
   MoteurBras.stop();
   Intake.stop();
 }
 
-void ButtonR2Pressed(){
-  double value = !PneumaBras.value();
-  PneumaBras.set(value);
+// active la pneuma du bras et désactive le moteur de l'intake si le bras est levé
+
+void ButtonL1Pressed(){
+  double value = !Lift.value();
+  Lift.set(value);
   BrasUp = value;
 
   
@@ -162,12 +174,20 @@ void ButtonR2Pressed(){
   }
 }
 
-void ButtonL1Pressed(){
-  PneumaBut.set(!PneumaBut.value());
+void ButtonXReleased(){
+  Intake_moteur.stop();
 }
 
+// active la petite pince pour les but
+
+void ButtonR2Pressed(){
+  Clamp.set(!Clamp.value());
+}
+
+// stop le moteur du bras quand le boutton n'est pas pressé
+
 void ButtonL2Released(){
-  MoteurBras.stop();
+  Intake.stop();
 }
 
 int position_track_task(){
@@ -180,8 +200,8 @@ int position_track_task(){
 // sinon elle va update les controlles du robot (les joystick et etc)
 
 void update(){
-  while (true) {
-    if (Inertial1.isCalibrating() == false){
+   while (true) {
+    if (1){
       Brain.Screen.setCursor(2, 1);
       Brain.Screen.print("X pos: %f",chassis.get_X_position());
       Brain.Screen.setCursor(3, 1);
@@ -192,8 +212,11 @@ void update(){
 
       } else {
 
-        bool ButtonBrasPressed = Controller.ButtonR1.pressing();
-        bool ButtonSpinBrasPressed = Controller.ButtonL2.pressing();
+        bool ButtonBrasPressed = Controller1.ButtonR1.pressing();
+        bool ButtonSpinBrasPressed = Controller1.ButtonL2.pressing();
+        bool ButtonXPressed = Controller1.ButtonX.pressing();
+
+        // tourne l'intake si le bras est lever sinon, tourne les deux si le boutton est pressé
 
         if (BrasUp && ButtonBrasPressed) {
           MoteurBras.spin(forward);
@@ -203,11 +226,15 @@ void update(){
         }
 
         if (ButtonSpinBrasPressed) {
-          MoteurBras.spin(forward);
+          Intake.spin(reverse);
         }
 
-        int LeftVelocity = Controller.Axis3.position(); //+ Controller.Axis1.position() * 2;
-        int RightVelocity = Controller.Axis2.position();// - Controller.Axis1.position() * 2;
+        if (ButtonXPressed){
+          Intake_moteur.spin(forward);
+        }
+
+        int LeftVelocity = Controller1.Axis3.position(); //+ Controller.Axis1.position() * 2;
+        int RightVelocity = Controller1.Axis2.position();// - Controller.Axis1.position() * 2;
        
         if (abs(RightVelocity) < Deadband ) {
           RightVelocity = 0;
@@ -216,11 +243,8 @@ void update(){
         if (abs(LeftVelocity) < Deadband ) {
           LeftVelocity = 0;
         }
-        
-        LeftDriveSmart.setVelocity(LeftVelocity,percent);
-        RightDriveSmart.setVelocity(RightVelocity,percent);
-        RightDriveSmart.spin(forward);
-        LeftDriveSmart.spin(forward);
+
+        chassis.control_tank();
       }
     }
     wait(20,msec);
@@ -248,57 +272,60 @@ void BrainPressed(){
 }
 
 void Autonomous(){
-
+  testauto();
 }
 
 void PreAuto(){
-  chassis.set_coordinates(0,0,0);
+  vexcodeInit();
+  default_constants();
+  chassis.DriveL.resetPosition();
+  chassis.DriveR.resetPosition();
+  chassis.R_SidewaysTracker.resetPosition();
+  chassis.R_ForwardTracker.resetPosition();
+  //chassis.set_coordinates(0,0,0);
 }
 
 // la fonction main qui gère: le reset des encodeur, les 2 fonction de competition et la tache d'update
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
-  vexcodeInit();
-  FowardEncoder.resetPosition();
-  SideEncoder.resetPosition();
   Competition.autonomous(Autonomous); // les 2 template de compétition
   Competition.drivercontrol(update);
 
   // les controle
 
-  Controller.ButtonR2.pressed(ButtonR2Pressed);
-  Controller.ButtonL1.pressed(ButtonL1Pressed);
-  Controller.ButtonUp.pressed(ButtonUpPressed);
-  Controller.ButtonDown.pressed(ButtonDownPressed);
-  Brain.Screen.pressed(BrainPressed);
+  Controller1.ButtonR2.pressed(ButtonR2Pressed);
+  Controller1.ButtonL1.pressed(ButtonL1Pressed);
+  Controller1.ButtonUp.pressed(ButtonUpPressed);
+  Controller1.ButtonDown.pressed(ButtonDownPressed);
 
-  Controller.ButtonR1.released(ButtonR1Released);
-  Controller.ButtonL2.released(ButtonL2Released);
+  Controller1.ButtonR1.released(ButtonR1Released);
+  Controller1.ButtonL2.released(ButtonL2Released);
+
+  Controller1.ButtonX.released(ButtonXReleased);
 
   // odometry stuff and PID
 
-  chassis.set_drive_constants(10,1,0.01,0.01,3);
+  /*chassis.set_drive_constants(10,1,0.01,0.01,3);
   chassis.set_turn_constants(7,0.14,0.005,1.25,9);
   chassis.set_heading_constants(7,0.5,0.01,1.5,20);
   chassis.set_drive_constants(10,0.55,0.0125,2.5,3);
   chassis.set_drive_exit_conditions(0.5,200,4000);
+  chassis.set_turn_exit_conditions(2,300,4000);*/
 
-  chassis.drive_timeout = 3000;
-
-  chassis.DriveL.resetPosition();
-  chassis.DriveR.resetPosition();
+ // chassis.drive_timeout = 3000;
 
   // speed
 
   MoteurBras.setVelocity(100,percent);
   Intake.setVelocity(100,percent);
 
+
   //task upd(update);
+  PreAuto();
   task updo(position_track_task);
-  while (chassis.Gyro.isCalibrating())
-  {
-    wait(20,msec);
+  while (true) {
+    wait(100, msec);
   }
   //DriveX.movefor(24);
 }

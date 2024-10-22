@@ -19,7 +19,8 @@
 			"includePath": [
 				"${vex_sdkIncludes}",
 				"${workspaceFolder}/include",
-				"C:/Users/gboss/AppData/Roaming/Code/User/globalStorage/vexrobotics.vexcode/sdk/cpp/V5/V5_20240223_11_00_00/vexv5/gcc/include/c++/4.9.3/bits"
+				"C:/Users/gboss/AppData/Roaming/Code/User/globalStorage/vexrobotics.vexcode/sdk/cpp/V5/V5_20240223_11_00_00/vexv5/gcc/include/c++/4.9.3/bits",
+				"${workspaceFolder}/include/JAR-Template"
 			],
 			"compilerPath": "${vex_compilerPath}",
 			"cStandard": "gnu99",

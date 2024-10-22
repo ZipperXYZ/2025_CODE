@@ -1,4 +1,3 @@
-#include "Drive_train.h"
 using namespace vex;
 
 extern brain Brain;
@@ -15,21 +14,29 @@ extern motor rightMotorA;
 extern motor rightMotorB;
 extern motor rightMotorC;
 
-extern motor_group LeftDriveSmart;
-extern motor_group RightDriveSmart;
-extern Drive_train DriveX;
+//extern motor_group LeftDriveSmart;
+//extern motor_group RightDriveSmart;
+//extern Drive_train DriveX;
 
-extern inertial Inertial1;
+//extern inertial Inertial2;
 extern inertial Inertial2;
-extern rotation FowardEncoder;
-extern rotation SideEncoder;
-extern controller Controller;
+//extern rotation FowardEncoder;
+//extern rotation SideEncoder;
+extern controller Controller1;
 
-extern motor Intake;
+/*extern motor Intake;
 extern motor MoteurBras;
-
+S
 extern digital_out PneumaBras;
-extern digital_out PneumaBut;
+extern digital_out PneumaBut;*/
+
+extern led intake;
+extern led Lift;
+extern led Clamp;
+
+extern motor Intake_moteur;
+extern motor MoteurBras;
+extern motor_group Intake;
 
 
 /**
