@@ -217,3 +217,12 @@ float clamp_min_voltage(float drive_output, float drive_min_voltage){
   }
   return drive_output;
 }
+
+float ReverseAngle(float angle){
+  if (angle != 0){
+    angle = 360 - angle;
+    return angle;
+  } else {
+    return angle;
+  }
+}

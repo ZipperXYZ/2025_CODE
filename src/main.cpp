@@ -108,7 +108,7 @@ PORT7,
 //Input Forward Tracker center distance (a positive distance corresponds to a tracker on the right side of the robot, negative is left.)
 //For a zero tracker tank drive with odom, put the positive distance from the center of the robot to the right side of the drive.
 //This distance is in inches:
-0,
+-0.25,
 
 //Input the Sideways Tracker Port, following the same steps as the Forward Tracker Port:
 PORT12,
@@ -117,7 +117,7 @@ PORT12,
 2.75,
 
 //Sideways tracker center distance (positive distance is behind the center of the robot, negative is in front):
-2.5
+2.25 // 2.5
 
 );
 
@@ -133,10 +133,10 @@ bool BrasUp = false;
 double TurnConstant = 1.5; // la distance en degrées que le moteur du bras va tourné
 double TurnPerTurn = 6; // the number of turn it takes for the motor to do 1 full revolution of the conveyor
 
-int SelectedAuto = -1; // bro si tu comprend pas ça ya des problème
+int SelectedAuto = 0; // bro si tu comprend pas ça ya des problème
 int NbOfAuto = 2;
 
-double Deadband = 20; // controller deadband
+double Deadband = 20; // controller deadband 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -195,18 +195,22 @@ int position_track_task(){
   return 1;
 }
 
+int printPosition(){
+   while (true) {
+      Brain.Screen.setCursor(2, 1);
+      Brain.Screen.print("X pos: %f",chassis.get_X_position());
+      Brain.Screen.setCursor(3, 1);
+      Brain.Screen.print("Y pos: %f",chassis.get_Y_position());
+   }
+   return 1;
+}
+
 // la fonction update sert a updater toute les choses qui ont besoin d'être update en temps réelle.
 // elle update (si le mode autonome est activé) l'odometry du robot (la position en X et Y)
 // sinon elle va update les controlles du robot (les joystick et etc)
 
 void update(){
    while (true) {
-    if (1){
-      Brain.Screen.setCursor(2, 1);
-      Brain.Screen.print("X pos: %f",chassis.get_X_position());
-      Brain.Screen.setCursor(3, 1);
-      Brain.Screen.print("Y pos: %f",chassis.get_Y_position());
-    }
     if (Competition.isEnabled()){
       if (Competition.isAutonomous()) {
 
@@ -261,10 +265,10 @@ void BrainPressed(){
 
   switch (SelectedAuto){
   case 0:
-    Brain.Screen.printAt(4,50,"Selected Auto1");
+    Brain.Screen.printAt(4,50,"Selected: rouge gauche win point");
     break;
   case 1:
-    Brain.Screen.printAt(4,50,"Selected Auto2");
+    Brain.Screen.printAt(4,50,"Selected: boucle pid power");
     break;
   default:
     break;
@@ -272,7 +276,16 @@ void BrainPressed(){
 }
 
 void Autonomous(){
-  testauto();
+  switch (SelectedAuto){
+  case 0:
+    Bleu_Gauche_Rush_Goal();
+    break;
+  case 1:
+    Brain.Screen.printAt(4,50,"Selected: boucle pid power");
+    break;
+  default:
+    break;
+  }
 }
 
 void PreAuto(){
@@ -298,6 +311,7 @@ int main() {
   Controller1.ButtonL1.pressed(ButtonL1Pressed);
   Controller1.ButtonUp.pressed(ButtonUpPressed);
   Controller1.ButtonDown.pressed(ButtonDownPressed);
+  Brain.Screen.pressed(BrainPressed);
 
   Controller1.ButtonR1.released(ButtonR1Released);
   Controller1.ButtonL2.released(ButtonL2Released);
@@ -320,8 +334,7 @@ int main() {
   MoteurBras.setVelocity(100,percent);
   Intake.setVelocity(100,percent);
 
-
-  //task upd(update);
+  task print(printPosition);
   PreAuto();
   task updo(position_track_task);
   while (true) {
