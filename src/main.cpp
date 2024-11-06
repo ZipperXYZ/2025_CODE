@@ -134,7 +134,7 @@ double TurnConstant = 1.5; // la distance en degrées que le moteur du bras va t
 double TurnPerTurn = 6; // the number of turn it takes for the motor to do 1 full revolution of the conveyor
 
 int SelectedAuto = 0; // bro si tu comprend pas ça ya des problème
-int NbOfAuto = 2;
+int NbOfAuto = 4;
 
 double Deadband = 20; // controller deadband 
 
@@ -210,6 +210,8 @@ int printPosition(){
 // sinon elle va update les controlles du robot (les joystick et etc)
 
 void update(){
+  chassis.DriveL.setStopping(coast);
+  chassis.DriveR.setStopping(coast);
    while (true) {
     if (Competition.isEnabled()){
       if (Competition.isAutonomous()) {
@@ -262,13 +264,22 @@ void BrainPressed(){
   if (SelectedAuto > NbOfAuto) {
     SelectedAuto = 0;
   }
-
+  Brain.Screen.clearScreen();
   switch (SelectedAuto){
   case 0:
-    Brain.Screen.printAt(4,50,"Selected: rouge gauche win point");
+    Brain.Screen.printAt(4,90,"Selected: rouge gauche win point");
     break;
   case 1:
-    Brain.Screen.printAt(4,50,"Selected: boucle pid power");
+    Brain.Screen.printAt(4,90,"Selected: rouge droite rush goal");
+    break;
+  case 2:
+    Brain.Screen.printAt(4,90,"Selected: bleu droite win point");
+    break; 
+  case 3:
+    Brain.Screen.printAt(4,90,"Selected: bleu gauche rush goal");
+    break;
+  case 4:
+    Brain.Screen.printAt(4,90,"Selected: Skill");
     break;
   default:
     break;
@@ -278,11 +289,18 @@ void BrainPressed(){
 void Autonomous(){
   switch (SelectedAuto){
   case 0:
-    Bleu_Gauche_Rush_Goal();
+    Rouge_Gauche_WP();
     break;
   case 1:
-    Brain.Screen.printAt(4,50,"Selected: boucle pid power");
+    Rouge_Droit_Rush_Goal();
     break;
+  case 2:
+    Bleu_Droite_WP();
+  case 3:
+    Bleu_Gauche_Rush_Goal();
+    break;
+  case 4:
+    Skill();
   default:
     break;
   }
@@ -302,7 +320,7 @@ void PreAuto(){
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
-  Competition.autonomous(Autonomous); // les 2 template de compétition
+  Competition.autonomous(Skill); // les 2 template de compétition
   Competition.drivercontrol(update);
 
   // les controle

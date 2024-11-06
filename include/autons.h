@@ -19,6 +19,9 @@ void Rouge_Droite_WP();
 void Rouge_Droite();
 
 void Bleu_Gauche_Rush_Goal();
+void Rouge_Droit_Rush_Goal();
+
+void Skill();
 
 
 

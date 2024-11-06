@@ -40,6 +40,8 @@
         "tuple": "cpp",
         "utility": "cpp",
         "string": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "system_error": "cpp",
+        "complex": "cpp"
     }
 }

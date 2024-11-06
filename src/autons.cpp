@@ -61,42 +61,26 @@ void Bleu_Droite_WP(){
   chassis.drive_distance(-20, 230, 12, 8);
   Clamp.off();
   chassis.turn_to_angle(0,12);
-  chassis.drive_to_pose(36,24,0,0.5,1,0);
+  chassis.drive_to_pose(-36,24,0,0.5,1,0);
   Intake.spin(forward);
   chassis.drive_distance(10,0,12,5);
   chassis.turn_to_angle(90);
   chassis.drive_distance(10, 90, 12, 8);
-  chassis.drive_to_pose(48,0,90,0.5,1,0);
-}
-
-// 4 Ring + toucher échelle (6 pts) Bleu Côté Droit
-
-void Bleu_Droite(){
-  chassis.drive_distance(-30, 17, 9, 8);
-  chassis.drive_distance(-3, 17, 9, 8);
-  Clamp.off();
-  Intake.setVelocity(100, percent);
-  chassis.turn_to_angle(230, 6);
-  Intake.spin(forward);
-  chassis.drive_distance(18, 220, 10, 6);
-  chassis.drive_distance(-12, 237, 10, 6);
-  chassis.drive_distance(15, 236, 5, 6);
-  chassis.turn_to_angle(0, 6);
-  chassis.drive_distance(15, 0, 6, 6);
-  Lift.off();
-  chassis.turn_to_angle(130, 6);
-  chassis.drive_distance(22, 250, 10, 6);
-  wait(1, seconds);
-  Clamp.on();
+  chassis.drive_to_pose(-44,0,90,0.5,1,0);
+  wait(3,seconds);
   Lift.on();
-  wait(1, seconds);
+  Clamp.on();
   Intake.stop();
+  wait(20,seconds);
 }
 
 void testauto(){
-  chassis.turn_to_angle(90,12);
+  //chassis.turn_to_angle(90,12);
   //chassis.drive_distance(24,0,12,12);
-  //chassis.drive_to_pose(24,24,90,0.5,1,0); // setback 1 // drive min /12/0/ 5
+  chassis.turn_to_angle(270);
+  chassis.drive_to_pose(9,11.5,90,0.5,1,0); // setback 1 // drive min /12/0/ 5
+  chassis.turn_to_angle(0);
+  chassis.drive_to_pose(21,38,0,0.5,1,0,12,12);
   //chassis.drive_to_pose(0,48,90,0.5,1,0); // setback 1 // drive min /12/0/ 5
   //chassis.drive_to_pose(0,72,0,0.5,1,0);
   //chassis.drive_to_pose(24,96,180,0.5,1,0);
@@ -104,20 +88,72 @@ void testauto(){
   //chassis.drive_to_point(0,72);
   //chassis.drive_to_point(48,120);
  //chassis.turn_to_angle(20);
-  //chassis.drive_distance(24,0ss,12,12);
+  //chassis.drive_distance(24s,0ss,12,12);
 }
 
 
+void Skill(){
+  Clamp.off();
+  chassis.drive_distance(-4,0);
+  Intake.spin(forward);
+  wait(0.5,seconds);
+  Clamp.on();
+  chassis.drive_distance(4,0);
 
-// AWP Solo (7 pts) Bleu Côté Gauche
+  // va chercher le premier but
 
-void Bleu_Gauche_WP(){
+  chassis.turn_to_angle(270,12);
+  chassis.drive_to_pose(7,11.5,270,0.01,0,0,12,12);
+  chassis.drive_distance(-9,270);
+  Clamp.off();
+  wait(0.3,seconds);
+
+  // va chercher le premier disque et le deuxieme disque
+  chassis.turn_settle_error = 3;
+  chassis.turn_settle_time = 0;
+  chassis.turn_to_angle(0);
+  chassis.turn_settle_error = 3;
+  chassis.turn_settle_time = 300;
+  chassis.drive_to_pose(21,38,0,0.5,1,5,12,12);
+
+  chassis.turn_to_angle(90);
+  chassis.drive_distance(27,90);
+
+  // va chercher les 3 disques dans le coin 
+
+  chassis.drive_to_pose(62,14,180,0.5,4,6,12,12);
+  chassis.turn_to_angle(270);
+  chassis.drive_distance(12,270);
+  wait(0.3,seconds);
+  chassis.drive_distance(-7,270);
+  chassis.turn_to_angle(190);
+  chassis.drive_distance(12,190);
+
+  // va dans le coin et dépose le but
+  chassis.drive_distance(-5,330);
+  Clamp.on();
+  chassis.drive_distance(-3,330);
+
+  // prendre le ring et le mettre sur le top truc
   
-}
+  chassis.drive_to_pose(58,55,0,0.5,4,0,12,12);
+  wait(0.3,seconds);
+  Intake.stop();
+  Clamp.off();
+  chassis.turn_to_angle(270);
+  Lift.off();
+  chassis.drive_distance(-7,270);
+  wait(1,seconds);
+  Intake.spin(forward);
+  wait(1,seconds);
+  Intake.stop();
+  Lift.on();
 
-// 2 top ring + échelles (6 pts) Bleu Côté Gauche
-void Bleu_Gauche(){
 
+
+
+
+  //chassis.drive_to_pose(21,13,270,0.5,4,0,12,10);
 }
 
 // AWP Solo (7 pts) Rouge Côté Gauche
@@ -144,50 +180,12 @@ void Rouge_Gauche_WP(){
   chassis.drive_distance(10,0,12,5);
   chassis.turn_to_angle(90);
   chassis.drive_distance(10, 90, 12, 8);
-  chassis.drive_to_pose(48,0,90,0.5,1,0);
-
-  //chassis.drive_distance(-5, 235, 12, 8);
-  //chassis.turn_to_angle(20, 6);
-  //Intake.spin(forward);
-  //chassis.drive_distance(17.5, 55, 12, 8);
-  //chassis.drive_distance(-14.5, 40, 12, 8);
-  //chassis.turn_to_angle(340, 8);
-  //chassis.drive_distance(20, 340, 12, 8);
-  //chassis.turn_to_angle(160, 12);
-  //chassis.drive_distance(38, 160, 12, 8);s
+  chassis.drive_to_pose(44,0,90,0.5,1,0);
   wait(3,seconds);
   Lift.on();
   Clamp.on();
   Intake.stop();
-  
-}
-
-// 4 ring + échelle (6 pts) Rouge Côté Gauche
-
-void Rouge_Gauche(){
-  chassis.drive_distance(-30.5, 343, 9, 8);
-  Clamp.off();
-  Intake.setVelocity(100, percent);
-  chassis.turn_to_angle(130, 6);
-  Intake.spin(forward);
-  chassis.drive_distance(17, 140, 10, 6);
-  chassis.drive_distance(-10, 123, 10, 6);
-  chassis.drive_distance(16.6, 124, 5, 6);
-  chassis.turn_to_angle(0, 6);
-  chassis.drive_distance(15, 0, 6, 6);
-  Lift.off();
-  chassis.turn_to_angle(250, 6);
-  chassis.drive_distance(22, 250, 10, 6);
-  wait(1, seconds);
-  Clamp.on();
-  Lift.on();
-  wait(1, seconds);
-  Intake.stop();
-}
-
-// AWP Solo (7 pts) Rouge Côté Droit
-
-void Rouge_Droite_WP(){
+  wait(20,seconds);
   
 }
 
@@ -198,24 +196,69 @@ void Rouge_Droite(){
 }
 
 void Bleu_Gauche_Rush_Goal(){
- // chassis.drive_distance(-30,0,12,12);
- //chassis.drive_to_curve(5,-40,330,0,0.7,0,12,12);
+  //chassis.X_Reversed = true;
+  //chassis.turn_to_angle(330);
+  //chassis.drive_to_pose(0,-10,150,0.5,0,0,12,10);
   chassis.drive_to_pose(9,-42,150,0.5,-4,0,12,10);
+  chassis.drive_settle_time = 100;
   Clamp.off();
+  chassis.drive_settle_time = 250;
   Intake.spin(forward);
-  chassis.drive_distance(4,150);
-  chassis.turn_to_angle(-315);
-  chassis.drive_distance(12,-315);
+  chassis.drive_distance(6,35);
+  //chassis.turn_to_angle(30,9);
+  //chassis.drive_distance(12,30);
+  
   chassis.turn_to_angle(280);
+  wait(0.3,seconds);
   Clamp.on();
-  wait(0.5,seconds);
+  chassis.drive_distance(5,280);
   chassis.turn_to_angle(90);
-  chassis.drive_distance(-22,90);
+  chassis.drive_to_pose(-10,-24,270,0.5,-6,0,12,10);
+  //chassis.drive_distance(-22,90);
   Clamp.off();
-  chassis.drive_to_pose(29,0,45,0.5,-4,0,12,10);
-  wait(1,seconds);
-  chassis.drive_to_pose(-26,-40,45,0.5,-4,0,12,10);
+  chassis.drive_timeout = 1500;
+  chassis.drive_to_pose(26,0,90,0.5,9,0,12,10);
+  chassis.turn_to_angle(50);
+  chassis.drive_distance(17,50);
+  wait(0.6,seconds);
+  chassis.turn_to_angle(270);
+  //chassis.drive_distance(-40,chassis.get_absolute_heading());
+  chassis.drive_to_pose(-20,-43,180,0.5,-6,0,12,10);
+  Intake.stop();
 
+}
+
+void Rouge_Droit_Rush_Goal(){
+  chassis.AngleReversed = true;
+  //chassis.X_Reversed = true;
+  //chassis.turn_to_angle(330);
+  //chassis.drive_to_pose(0,-10,150,0.5,0,0,12,10);
+  chassis.drive_to_pose(-9,-42,150,0.5,-4,0,12,10);
+  chassis.drive_settle_time = 100;
+  Clamp.off();
+  chassis.drive_settle_time = 250;
+  Intake.spin(forward);
+  chassis.drive_distance(4,chassis.get_absolute_heading());
+  //chassis.turn_to_angle(30,9);
+  //chassis.drive_distance(12,30);
+  
+  chassis.turn_to_angle(280);
+  wait(0.3,seconds);
+  Clamp.on();
+  chassis.drive_distance(5,280);
+  chassis.turn_to_angle(90);
+  chassis.drive_to_pose(10,-24,270,0.5,-6,0,12,10);
+  //chassis.drive_distance(-22,90);
+  Clamp.off();
+  chassis.drive_timeout = 1500;
+  chassis.drive_to_pose(-26,0,90,0.5,9,0,12,10);
+  chassis.turn_to_angle(50);
+  chassis.drive_distance(17,50);
+  wait(0.6,seconds);
+  chassis.turn_to_angle(270);
+  //chassis.drive_distance(-40,chassis.get_absolute_heading());
+  chassis.drive_to_pose(20,-45,180,0.5,-6,0,12,10);
+  Intake.stop();
 }
 
 
