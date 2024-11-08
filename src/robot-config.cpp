@@ -42,6 +42,7 @@ led Clamp = led(Brain.ThreeWirePort.D);
 motor MoteurBras = motor(PORT17,ratio6_1,false);
 motor Intake_moteur = motor(PORT15,ratio36_1,false);
 motor_group Intake = motor_group(Intake_moteur,MoteurBras);
+optical ColorSensor = optical(PORT10);
 
 // VEXcode generated functions
 

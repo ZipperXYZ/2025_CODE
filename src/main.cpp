@@ -329,13 +329,15 @@ int main() {
   Controller1.ButtonL1.pressed(ButtonL1Pressed);
   Controller1.ButtonUp.pressed(ButtonUpPressed);
   Controller1.ButtonDown.pressed(ButtonDownPressed);
+  Controller1.ButtonA.pressed(IntakeUntilDisk);
   Brain.Screen.pressed(BrainPressed);
 
   Controller1.ButtonR1.released(ButtonR1Released);
   Controller1.ButtonL2.released(ButtonL2Released);
 
   Controller1.ButtonX.released(ButtonXReleased);
-
+  ColorSensor.setLight(vex::ledState::on);
+  ColorSensor.setLightPower(100,percent);
   // odometry stuff and PID
 
   /*chassis.set_drive_constants(10,1,0.01,0.01,3);

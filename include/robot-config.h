@@ -38,6 +38,8 @@ extern motor Intake_moteur;
 extern motor MoteurBras;
 extern motor_group Intake;
 
+extern optical ColorSensor;
+
 
 /**
  * Used to initialize code/tasks/sdevices added using tools in VEXcode Pro.

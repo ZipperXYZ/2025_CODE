@@ -226,3 +226,42 @@ float ReverseAngle(float angle){
     return angle;
   }
 }
+
+
+// team 1 = red team 0 = blue
+
+int Team = 1;
+
+int RedMinHUE = 10;
+int RedMaxHUE = 30;
+
+int BlueMinHUE = 200;
+int BlueMaxHUE = 200;
+
+int ChoosedMax;
+int ChoosedMin;
+
+void IntakeUntilDisk(){
+
+
+  if (Team == 1) {
+    ChoosedMax = RedMaxHUE;
+    ChoosedMin = RedMinHUE;
+  } else if (Team == 0) {
+    ChoosedMax = BlueMaxHUE;
+    ChoosedMin = BlueMinHUE;
+  }
+
+  Brain.Screen.printAt(60,120,"running %f",ChoosedMax);
+
+  while (ColorSensor.hue() >= ChoosedMax || ColorSensor.hue() <= ChoosedMin)
+  {
+    Intake.spin(forward);
+  }
+
+  wait(0.06,seconds);
+
+  Intake.stop();
+  
+
+}

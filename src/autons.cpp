@@ -93,6 +93,8 @@ void testauto(){
 
 
 void Skill(){
+  chassis.drive_settle_time = 150;
+  chassis.turn_settle_time = 150;
   Clamp.off();
   chassis.drive_distance(-4,0);
   Intake.spin(forward);
@@ -113,34 +115,34 @@ void Skill(){
   chassis.turn_settle_time = 0;
   chassis.turn_to_angle(0);
   chassis.turn_settle_error = 3;
-  chassis.turn_settle_time = 300;
-  chassis.drive_to_pose(21,38,0,0.5,1,5,12,12);
+  chassis.turn_settle_time = 150;
+  chassis.drive_to_pose(21,34,0,0.5,1,5,12,12);
 
   chassis.turn_to_angle(90);
   chassis.drive_distance(27,90);
 
   // va chercher les 3 disques dans le coin 
 
-  chassis.drive_to_pose(62,14,180,0.5,4,6,12,12);
+  chassis.drive_to_pose(62,18,180,0.5,4,6,12,12);
   chassis.turn_to_angle(270);
   chassis.drive_distance(12,270);
   wait(0.3,seconds);
   chassis.drive_distance(-7,270);
-  chassis.turn_to_angle(190);
-  chassis.drive_distance(12,190);
+  chassis.turn_to_angle(205);
+  chassis.drive_distance(14,205);
 
   // va dans le coin et dépose le but
-  chassis.drive_distance(-5,330);
+  chassis.drive_distance(-5,310);
   Clamp.on();
-  chassis.drive_distance(-3,330);
+  chassis.drive_distance(-6,310);
 
   // prendre le ring et le mettre sur le top truc
-  
-  chassis.drive_to_pose(58,55,0,0.5,4,0,12,12);
+  chassis.drive_settle_time = 250;
+  chassis.drive_to_pose(57,55,0,0.5,4,0,12,12);
   wait(0.3,seconds);
-  Intake.stop();
   Clamp.off();
   chassis.turn_to_angle(270);
+  Intake.stop();
   Lift.off();
   chassis.drive_distance(-7,270);
   wait(1,seconds);
