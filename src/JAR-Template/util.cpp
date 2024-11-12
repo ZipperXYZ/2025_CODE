@@ -241,8 +241,11 @@ int BlueMaxHUE = 200;
 int ChoosedMax;
 int ChoosedMin;
 
-void IntakeUntilDisk(){
+int MaxTime = 3000;
 
+int IntakeUntilDisk(){
+
+  int Time = 0;
 
   if (Team == 1) {
     ChoosedMax = RedMaxHUE;
@@ -254,14 +257,14 @@ void IntakeUntilDisk(){
 
   Brain.Screen.printAt(60,120,"running %f",ChoosedMax);
 
-  while (ColorSensor.hue() >= ChoosedMax || ColorSensor.hue() <= ChoosedMin)
+  while ((ColorSensor.hue() >= ChoosedMax || ColorSensor.hue() <= ChoosedMin) && Time < MaxTime)
   {
     Intake.spin(forward);
+    Time += 20;
+    wait(20,msec);
   }
-
-  wait(0.06,seconds);
 
   Intake.stop();
   
-
+  return 1;
 }

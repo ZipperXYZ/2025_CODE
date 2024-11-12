@@ -190,6 +190,10 @@ void ButtonL2Released(){
   Intake.stop();
 }
 
+void ButtonAPressed(){
+  IntakeUntilDisk();
+}
+
 int position_track_task(){
   chassis.position_track();
   return 1;
@@ -329,7 +333,7 @@ int main() {
   Controller1.ButtonL1.pressed(ButtonL1Pressed);
   Controller1.ButtonUp.pressed(ButtonUpPressed);
   Controller1.ButtonDown.pressed(ButtonDownPressed);
-  Controller1.ButtonA.pressed(IntakeUntilDisk);
+  Controller1.ButtonA.pressed(ButtonAPressed);
   Brain.Screen.pressed(BrainPressed);
 
   Controller1.ButtonR1.released(ButtonR1Released);
@@ -353,6 +357,7 @@ int main() {
 
   MoteurBras.setVelocity(100,percent);
   Intake.setVelocity(100,percent);
+
 
   task print(printPosition);
   PreAuto();

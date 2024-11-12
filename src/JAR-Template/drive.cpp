@@ -599,7 +599,6 @@ void Drive::drive_to_pose(float X_position, float Y_position, float angle, float
     if (drive_error<drive_settle_error || crossed_center_line || drive_error < setback) { 
       heading_error = reduce_negative_180_to_180(angle-get_absolute_heading()); 
       drive_error = target_distance;
-      printf("enabled \n");
     }
     float drive_output = drivePID.compute(drive_error);
     
@@ -608,7 +607,6 @@ void Drive::drive_to_pose(float X_position, float Y_position, float angle, float
     drive_output*=heading_scale_factor;
     heading_error = reduce_negative_90_to_90(heading_error);
     float heading_output = headingPID.compute(heading_error);
-    printf("heading error %f heading: %f heading scale %f\n",heading_error,get_absolute_heading(),heading_scale_factor);
     drive_output = clamp(drive_output, -fabs(heading_scale_factor)*drive_max_voltage, fabs(heading_scale_factor)*drive_max_voltage);
     heading_output = clamp(heading_output, -heading_max_voltage, heading_max_voltage);
 

@@ -105,7 +105,7 @@ void Skill(){
   // va chercher le premier but
 
   chassis.turn_to_angle(270,12);
-  chassis.drive_to_pose(7,11.5,270,0.01,0,0,12,12);
+  chassis.drive_to_pose(7,10,270,0.01,0,0,12,12);
   chassis.drive_distance(-9,270);
   Clamp.off();
   wait(0.3,seconds);
@@ -123,7 +123,7 @@ void Skill(){
 
   // va chercher les 3 disques dans le coin 
 
-  chassis.drive_to_pose(62,18,180,0.5,4,6,12,12);
+  chassis.drive_to_pose(62,18,180,0.5,4,6,9,9);
   chassis.turn_to_angle(270);
   chassis.drive_distance(12,270);
   wait(0.3,seconds);
@@ -135,21 +135,88 @@ void Skill(){
   chassis.drive_distance(-5,310);
   Clamp.on();
   chassis.drive_distance(-6,310);
+  Intake.stop();
 
   // prendre le ring et le mettre sur le top truc
   chassis.drive_settle_time = 250;
-  chassis.drive_to_pose(57,55,0,0.5,4,0,12,12);
+  chassis.drive_settle_error = 0.1;
+  task Disk(IntakeUntilDisk);
+  chassis.drive_to_pose(56,55.5,0,0.5,4,0,12,12);
+  chassis.drive_settle_error = 2.6;
   wait(0.3,seconds);
   Clamp.off();
   chassis.turn_to_angle(270);
-  Intake.stop();
   Lift.off();
-  chassis.drive_distance(-7,270);
+  chassis.drive_distance(-9,270);
+  Intake.stop();
   wait(1,seconds);
   Intake.spin(forward);
   wait(1,seconds);
   Intake.stop();
   Lift.on();
+
+  // va vers le point 0,0 pour la deuxieme séquence laurtre bord
+  chassis.drive_distance(7,90);
+  Clamp.on(); 
+  chassis.turn_to_angle(90);
+  chassis.drive_to_pose(-20,20,0,0.5,4,0,12,12);
+  //chassis.drive_to_pose(-20,20,90,0.5,10,0,12,12);
+  Clamp.off();
+
+  // legit la meme chose que au début mais a l'inverse
+
+  //////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+
+  // va chercher le premier disque et le deuxieme disque
+  Intake.spin(forward);
+  chassis.AngleReversed = true;
+  chassis.turn_settle_error = 3;
+  chassis.turn_settle_time = 0;
+  chassis.turn_to_angle(0);
+  chassis.turn_settle_error = 3;
+  chassis.turn_settle_time = 150;
+  chassis.drive_to_pose(-21,34,0,0.5,1,5,12,12);
+
+  chassis.turn_to_angle(90);
+  chassis.drive_distance(27,90);
+
+  // va chercher les 3 disques dans le coin 
+
+  chassis.drive_to_pose(-62,18,180,0.5,4,6,12,12);
+  chassis.turn_to_angle(270);
+  chassis.drive_distance(12,270);
+  wait(0.3,seconds);
+  chassis.drive_distance(-7,270);
+  chassis.turn_to_angle(205);
+  chassis.drive_distance(14,205);
+
+  // va dans le coin et dépose le but
+  chassis.drive_distance(-5,310);
+  Clamp.on();
+  chassis.drive_distance(-6,310);
+  Intake.stop();
+
+  // prendre le ring et le mettre sur le top truc
+  chassis.drive_settle_time = 250;
+  chassis.drive_settle_error = 0.5;
+  chassis.drive_to_pose(-56,56,0,0.5,4,0,12,12);
+  chassis.drive_settle_error = 2.6;
+  task Disk2(IntakeUntilDisk);
+  wait(0.3,seconds);
+  Clamp.off();
+  chassis.turn_to_angle(270);
+  Lift.off();
+  chassis.drive_distance(-7,270);
+  Intake.stop();
+  wait(1,seconds);
+  Intake.spin(forward);
+  wait(1,seconds);
+  Intake.stop();
+  Lift.on();
+  
+
+
 
 
 
