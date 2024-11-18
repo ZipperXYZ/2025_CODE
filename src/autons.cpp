@@ -79,8 +79,42 @@ void testauto(){
  // chassis.drive_distance(24,0,12,12);
   chassis.set_heading_constants(7,0.5,0.005,6.6,10); //5 // 2 // 1.5 D: 6.6 I: 0.005
   chassis.set_coordinates(-56,52,90);
- // chassis.set_heading_constants(7,0.5,0.05,5.5,60); //5 // 2 // 1.5 // i = 2 best  (7,0.5,0.05,5.5,60)
-  chassis.drive_to_pose(-0,72,0,0.5,1,0,12,12);
+  task disk3(IntakeUntilDisk);
+  chassis.drive_to_pose(-9,84,45,0.5,1,0,12,12);
+  chassis.turn_to_angle(220);
+  chassis.drive_distance(-16,220);
+  Clamp.off();
+  Intake.spin(forward);
+  wait(0.3,seconds);
+
+  // va chercher les 3 disques rouge du coins avec les disques bleu sur le top
+
+  chassis.drive_to_pose(-50,78,270,0.5,1,0,12,12);
+  chassis.drive_distance(-13,0);
+  chassis.turn_to_angle(0);
+  chassis.drive_distance(24,0);
+  Intake.stop();
+  chassis.drive_distance(15,75);
+  Intake.spin(forward);
+  chassis.drive_distance(-20,0);
+  chassis.drive_to_pose(chassis.get_X_position() + 6,chassis.get_Y_position() + 20,0,0.5,1,0,12,12);
+  chassis.drive_distance(-6,0);
+  chassis.turn_to_angle(270);
+  chassis.drive_distance(12,270);
+  chassis.turn_to_angle(160);
+  Clamp.on();
+  chassis.drive_distance(-14,160);
+  Intake.stop();
+  chassis.drive_distance(14,160);
+
+  // va chercher le disque random et le mets dans le alliance stake bleu
+  task disk4(IntakeUntilDisk);
+  chassis.drive_to_pose(24,68,180,0.5,1,0,12,12);
+  Clamp.off();
+  chassis.drive_to_pose(0,105,180,0.5,1,0,12,12);
+  Intake.spin(forward);
+
+
   //chassis.turn_to_angle(270);s
   //chassis.drive_to_pose(9,11.5,90,0.5,1,0); // setback 1 // drive min /12/0/ 5
   //chassis.turn_to_angle(0);ss
