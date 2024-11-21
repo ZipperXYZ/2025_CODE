@@ -312,13 +312,13 @@ void Drive::drive_distance(float distance, float heading, float drive_max_voltag
 void Drive::drive_distance(float distance, float heading, float drive_max_voltage, float heading_max_voltage, float drive_settle_error, float drive_settle_time, float drive_timeout, float drive_kp, float drive_ki, float drive_kd, float drive_starti, float heading_kp, float heading_ki, float heading_kd, float heading_starti){
   PID drivePID(distance, drive_kp, drive_ki, drive_kd, drive_starti, drive_settle_error, drive_settle_time, drive_timeout);
   PID headingPID(reduce_negative_180_to_180(heading - get_absolute_heading()), heading_kp, heading_ki, heading_kd, heading_starti);
-  float start_average_position = (R_ForwardTracker.position(degrees) / 360) * std::abs(ForwardTracker_diameter) * M_PI;//(get_left_position_in()+get_right_position_in())/2.0;
+  float start_average_position = (R_ForwardTracker.position(degrees) / 360) * fabs(ForwardTracker_diameter) * M_PI;//(get_left_position_in()+get_right_position_in())/2.0;
   float average_position = start_average_position;
   if (AngleReversed){
     heading = ReverseAngle(heading);
   }
   while(drivePID.is_settled() == false){
-    average_position = (R_ForwardTracker.position(degrees) / 360) * std::abs(ForwardTracker_diameter) * M_PI;//(get_left_position_in()+get_right_position_in())/2.0;
+    average_position = (R_ForwardTracker.position(degrees) / 360) * fabs(ForwardTracker_diameter) * M_PI;//(get_left_position_in()+get_right_position_in())/2.0;
     float drive_error = distance+start_average_position-average_position;
     float heading_error = reduce_negative_180_to_180(heading - get_absolute_heading());
     float drive_output = drivePID.compute(drive_error);
@@ -413,7 +413,7 @@ float Drive::get_SidewaysTracker_position(){
 void Drive::position_track(){
   while(1){
     odom.update_position(get_ForwardTracker_position(), get_SidewaysTracker_position(), get_absolute_heading());
-    task::sleep(5);
+    task::sleep(1);
   }
 }
 

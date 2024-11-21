@@ -324,7 +324,7 @@ void PreAuto(){
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
-  Competition.autonomous(testauto); // les 2 template de compétition
+  Competition.autonomous(Skill); // les 2 template de compétition
   Competition.drivercontrol(update);
 
   // les controle

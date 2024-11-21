@@ -82,7 +82,7 @@ void testauto(){
   task disk3(IntakeUntilDisk);
   chassis.drive_to_pose(-9,84,45,0.5,1,0,12,12);
   chassis.turn_to_angle(220);
-  chassis.drive_distance(-16,220);
+  chassis.drive_distance(-20,220);
   Clamp.off();
   Intake.spin(forward);
   wait(0.3,seconds);
@@ -90,6 +90,7 @@ void testauto(){
   // va chercher les 3 disques rouge du coins avec les disques bleu sur le top
 
   chassis.drive_to_pose(-50,78,270,0.5,1,0,12,12);
+  chassis.drive_settle_time = 50;
   chassis.drive_distance(-13,0);
   chassis.turn_to_angle(0);
   chassis.drive_distance(24,0);
@@ -97,22 +98,32 @@ void testauto(){
   chassis.drive_distance(15,75);
   Intake.spin(forward);
   chassis.drive_distance(-20,0);
+  chassis.drive_timeout = 1600;
   chassis.drive_to_pose(chassis.get_X_position() + 6,chassis.get_Y_position() + 20,0,0.5,1,0,12,12);
   chassis.drive_distance(-6,0);
   chassis.turn_to_angle(270);
   chassis.drive_distance(12,270);
   chassis.turn_to_angle(160);
   Clamp.on();
-  chassis.drive_distance(-14,160);
+  chassis.drive_distance(-14,160,12,12,2.5,300,1000);
+  chassis.drive_timeout = 3000;
   Intake.stop();
+  Intake.spinFor(reverse,0.7,seconds);
   chassis.drive_distance(14,160);
 
   // va chercher le disque random et le mets dans le alliance stake bleu
-  task disk4(IntakeUntilDisk);
-  chassis.drive_to_pose(24,68,180,0.5,1,0,12,12);
-  Clamp.off();
-  chassis.drive_to_pose(0,105,180,0.5,1,0,12,12);
   Intake.spin(forward);
+  chassis.drive_to_pose(28,68,180,0.5,1,0,12,12);
+  Intake.stop();
+  task disk4(IntakeUntilDisk);
+  Clamp.off();
+  chassis.drive_timeout = 2000;
+  chassis.drive_to_pose(8,115,0,0.5,1,0,12,12);
+  Intake.spin(forward);
+  wait(0.3,seconds);
+  chassis.turn_to_angle(90);
+  chassis.drive_to_pose(64,110,90,0.5,1,12,12,12);
+
 
 
   //chassis.turn_to_angle(270);s
@@ -152,7 +163,7 @@ void Skill(){
   // va chercher le premier but
 
   chassis.turn_to_angle(270,12);
-  chassis.drive_to_pose(6.5,9.5,270,0.01,0,0,12,12);
+  chassis.drive_to_pose(6,9,270,0.01,0,0,12,12);
   chassis.drive_distance(-9,270);
   Clamp.off();
   wait(0.3,seconds);
@@ -163,7 +174,7 @@ void Skill(){
   chassis.turn_to_angle(0);
   chassis.turn_settle_error = 3;
   chassis.turn_settle_time = 150;
-  chassis.drive_to_pose(21,34,0,0.5,1,9,12,12);
+  chassis.drive_to_pose(21,30,0,0.5,1,9,12,12); /// 34
 
   chassis.turn_to_angle(90);
   chassis.drive_distance(27,90);
@@ -176,7 +187,7 @@ void Skill(){
   wait(0.3,seconds);
   chassis.drive_distance(-7,270);
   chassis.turn_to_angle(205);
-  chassis.drive_distance(14,205);
+  chassis.drive_distance(12,205);
 
   // va dans le coin et dépose le but
   chassis.drive_distance(-5,310);
@@ -189,19 +200,21 @@ void Skill(){
   chassis.drive_settle_error = 0.1;
   wait(0.2,seconds);
   task Disk(IntakeUntilDisk);
-  chassis.drive_to_pose(57,56,0,0.5,4,0,12,12);
+ // chassis.drive_to_point(57,56);
+  chassis.drive_to_pose(58,56.8,0,0.5,1,0,12,12); // 56
+  //chassis.drive_to_pose(57,57,0,0.5,1,0,12,12);
   printf("pos X: %f pos y: %f",chassis.get_X_position(),chassis.get_Y_position());
   chassis.drive_settle_error = 2.6;
   wait(0.3,seconds);
   Clamp.off();
   chassis.turn_to_angle(270);
   Lift.off();
-  chassis.drive_distance(-9,270,12,12,2.6,250,400);
+  chassis.drive_distance(-11,270,12,12,2.6,250,500);
   chassis.drive_timeout = 3000;
   Intake.stop();
-  wait(1,seconds);
+  wait(0.3,seconds);
   Intake.spin(forward);
-  wait(1,seconds);
+  wait(0.5,seconds); // 1
   Intake.stop();
   Lift.on();
 
@@ -211,8 +224,12 @@ void Skill(){
   Clamp.on(); 
   chassis.turn_to_angle(90);
   chassis.drive_settle_error = 0.5;
-  chassis.drive_to_pose(-11,13.5,90,-0.5,16,0,12,12);
-  chassis.drive_distance(-11,90);
+  chassis.drive_settle_time = 50;
+  chassis.drive_to_pose(-8,12.5,90,-0.5,16,0,12,12);
+  chassis.drive_settle_error = 3;
+  chassis.drive_settle_time = 50;
+  chassis.drive_distance(-16,90,12,12);
+
   Clamp.off();
   wait(0.5,seconds);
 
@@ -235,11 +252,15 @@ void Skill(){
   //chassis.drive_to_pose(-21,34,0,0.5,1,5,12,12);
 
   chassis.turn_to_angle(90);
-  chassis.drive_distance(27,90);
+  chassis.drive_distance(24,90);
 
   // va chercher les 3 disques dans le coin 
 
-  chassis.drive_to_pose(-62,18,180,0.5,4,6,12,12);
+  chassis.drive_settle_error = 2;
+
+  chassis.drive_to_pose(-60,18,180,0.5,4,9,12,12);
+  chassis.drive_settle_time = 50;
+  chassis.drive_timeout = 2500;
   chassis.turn_to_angle(270);
   chassis.drive_distance(12,270);
   wait(0.3,seconds);
@@ -254,30 +275,79 @@ void Skill(){
   Intake.stop();
 
   // prendre le ring et le mettre sur le top truc
+  chassis.drive_settle_time = 3000;
   chassis.drive_settle_time = 250;
   chassis.drive_settle_error = 0.1;
   task Disk2(IntakeUntilDisk);
-  chassis.drive_to_pose(-56,52,0,0.5,4,0,9,9);
+  chassis.drive_to_pose(-56,53.5,0,0.5,4,0,9,9); // 54
   chassis.drive_settle_error = 2.6;
   wait(0.3,seconds);
   Clamp.off();
   chassis.turn_to_angle(270);
+  wait(0.3,seconds);
   Lift.off();
-  chassis.drive_distance(-10,270);
+  chassis.drive_timeout = 500;
+  chassis.drive_distance(-12,270);
   Intake.stop();
   wait(1,seconds);
   Intake.spin(forward);
   wait(1,seconds);
   Intake.stop();
   Lift.on();
-  chassis.drive_distance(8,90);
-  chassis.turn_to_angle(90);
+  chassis.drive_timeout = 3000;
+
 
   // va chercher le beaux disque a raph et va prendre lautre but weird
 
-  chassis.drive_to_pose(-20,74,90,0.5,4,0,12,10);
+
+  // début de l'autre bord
+  Clamp.on();
+  chassis.AngleReversed = false;
+  task disk3(IntakeUntilDisk);
+  wait(0.3,seconds);
+  chassis.drive_to_pose(-19,80,45,0.5,1,0,12,12);
+  chassis.turn_to_angle(220);
+  chassis.drive_distance(-20,220);
+  Clamp.off();
+  Intake.spin(forward);
+  wait(0.3,seconds);
+
+  // va chercher les 3 disques rouge du coins avec les disques bleu sur le top
+
+  chassis.drive_to_pose(-55,82,270,0.5,1,0,12,12);
+  chassis.drive_settle_time = 50;
+  chassis.drive_distance(-13,0);
+  chassis.turn_to_angle(0);
+  chassis.drive_distance(24,0);
+  Intake.stop();
+  chassis.drive_distance(15,75);
+  Intake.spin(forward);
+  chassis.drive_distance(-20,0);
+  chassis.drive_timeout = 1600;
+  chassis.drive_to_pose(chassis.get_X_position() + 6,chassis.get_Y_position() + 20,0,0.5,1,0,12,12);
+  chassis.drive_distance(-6,0);
   chassis.turn_to_angle(270);
-  chassis.drive_to_pose(0,90,270,0.5,-6,0,12,10);  //chassis.drive_to_pose(21,13,270,0.5,4,0,12,10);
+  chassis.drive_distance(12,270);
+  chassis.turn_to_angle(160);
+  Clamp.on();
+  chassis.drive_distance(-14,160,12,12,2.5,300,1000);
+  chassis.drive_timeout = 3000;
+  Intake.stop();
+  Intake.spinFor(reverse,0.7,seconds);
+  chassis.drive_distance(14,160);
+
+  // va chercher le disque random et le mets dans le alliance stake bleu
+  Intake.spin(forward);
+  chassis.drive_to_pose(28,68,180,0.5,1,0,12,12);
+  Intake.stop();
+  task disk4(IntakeUntilDisk);
+  Clamp.off();
+  chassis.drive_timeout = 2000;
+  chassis.drive_to_pose(8,115,0,0.5,1,0,12,12);
+  Intake.spin(forward);
+  wait(0.3,seconds);
+  chassis.turn_to_angle(90);
+  chassis.drive_to_pose(64,110,90,0.5,1,12,12,12);
 }
 
 // AWP Solo (7 pts) Rouge Côté Gauche
