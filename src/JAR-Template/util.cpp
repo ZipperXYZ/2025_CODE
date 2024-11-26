@@ -248,11 +248,7 @@ int ChoosedMin;
 int MaxTime = 3000;
 
 int IntakeUntilDisk(){
-
-  if (IsBrasUp()){
-    return 1;
-  }
-
+  
   int Time = 0;
 
   if (Team == 1) {

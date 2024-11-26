@@ -148,12 +148,6 @@ void ButtonUpPressed(){
   MoteurBras.spinToPosition(MoteurBras.position(turns) + TurnConstant,turns,true);
 }
 
-// le bras retourne à la position de départ
-
-void ButtonDownPressed() {
-  MoteurBras.spinToPosition(round(MoteurBras.position(turns))/TurnPerTurn,turns);
-}
-
 // stop les moteur du bras et de l'intake quand le boutton r1 est relaché
 
 void ButtonR1Released(){
@@ -181,7 +175,8 @@ void ButtonXReleased(){
 // active la petite pince pour les but
 
 void ButtonR2Pressed(){
-  Clamp.set(!Clamp.value());
+  Clamp.off();
+ // Clamp.set(!Clamp.value());
 }
 
 // stop le moteur du bras quand le boutton n'est pas pressé
@@ -190,8 +185,12 @@ void ButtonL2Released(){
   Intake.stop();
 }
 
-void ButtonAPressed(){
-  IntakeUntilDisk();
+void ButtonDownReleased(){
+  Intake_moteur.stop();
+}
+
+void ButtonBPressed(){
+  Clamp.on();
 }
 
 int position_track_task(){
@@ -225,6 +224,7 @@ void update(){
         bool ButtonBrasPressed = Controller1.ButtonR1.pressing();
         bool ButtonSpinBrasPressed = Controller1.ButtonL2.pressing();
         bool ButtonXPressed = Controller1.ButtonX.pressing();
+        bool ButtonDownPressed = Controller1.ButtonDown.pressing();
 
         // tourne l'intake si le bras est lever sinon, tourne les deux si le boutton est pressé
 
@@ -240,6 +240,10 @@ void update(){
         }
 
         if (ButtonXPressed){
+          Intake_moteur.spin(forward);
+        }
+
+        if (ButtonDownPressed){
           Intake_moteur.spin(forward);
         }
 
@@ -324,7 +328,7 @@ void PreAuto(){
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
-  Competition.autonomous(Skill); // les 2 template de compétition
+  Competition.autonomous(RougeGaucheFinal); // les 2 template de compétition
   Competition.drivercontrol(update);
 
   // les controle
@@ -332,13 +336,12 @@ int main() {
   Controller1.ButtonR2.pressed(ButtonR2Pressed);
   Controller1.ButtonL1.pressed(ButtonL1Pressed);
   Controller1.ButtonUp.pressed(ButtonUpPressed);
-  Controller1.ButtonDown.pressed(ButtonDownPressed);
-  Controller1.ButtonA.pressed(ButtonAPressed);
+  Controller1.ButtonB.pressed(ButtonBPressed);
   Brain.Screen.pressed(BrainPressed);
 
   Controller1.ButtonR1.released(ButtonR1Released);
   Controller1.ButtonL2.released(ButtonL2Released);
-
+  Controller1.ButtonDown.released(ButtonDownReleased);
   Controller1.ButtonX.released(ButtonXReleased);
   ColorSensor.setLight(vex::ledState::on);
   ColorSensor.setLightPower(100,percent);

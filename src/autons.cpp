@@ -163,7 +163,7 @@ void Skill(){
   // va chercher le premier but
 
   chassis.turn_to_angle(270,12);
-  chassis.drive_to_pose(6,9,270,0.01,0,0,12,12);
+  chassis.drive_to_pose(6,9.6,270,0.01,0,0,12,12);
   chassis.drive_distance(-9,270);
   Clamp.off();
   wait(0.3,seconds);
@@ -177,11 +177,13 @@ void Skill(){
   chassis.drive_to_pose(21,30,0,0.5,1,9,12,12); /// 34
 
   chassis.turn_to_angle(90);
+  chassis.drive_settle_time = 50;
   chassis.drive_distance(27,90);
+  chassis.drive_settle_time = 250;
 
   // va chercher les 3 disques dans le coin 
 
-  chassis.drive_to_pose(62,18,180,0.5,4,9,12,12);
+  chassis.drive_to_pose(61.5,18,180,0.5,4,9,12,12);
   chassis.turn_to_angle(270);
   chassis.drive_distance(12,270);
   wait(0.3,seconds);
@@ -201,7 +203,7 @@ void Skill(){
   wait(0.2,seconds);
   task Disk(IntakeUntilDisk);
  // chassis.drive_to_point(57,56);
-  chassis.drive_to_pose(58,56.8,0,0.5,1,0,12,12); // 56
+  chassis.drive_to_pose(57.5,56.8,0,0.5,1,0,12,12); // 56
   //chassis.drive_to_pose(57,57,0,0.5,1,0,12,12);
   printf("pos X: %f pos y: %f",chassis.get_X_position(),chassis.get_Y_position());
   chassis.drive_settle_error = 2.6;
@@ -214,7 +216,7 @@ void Skill(){
   Intake.stop();
   wait(0.3,seconds);
   Intake.spin(forward);
-  wait(0.5,seconds); // 1
+  wait(0.7,seconds); // 1
   Intake.stop();
   Lift.on();
 
@@ -225,10 +227,10 @@ void Skill(){
   chassis.turn_to_angle(90);
   chassis.drive_settle_error = 0.5;
   chassis.drive_settle_time = 50;
-  chassis.drive_to_pose(-8,12.5,90,-0.5,16,0,12,12);
+  chassis.drive_to_pose(-6.5,13.4,90,-0.5,16,0,12,12);
   chassis.drive_settle_error = 3;
   chassis.drive_settle_time = 50;
-  chassis.drive_distance(-16,90,12,12);
+  chassis.drive_distance(-17.5,90,12,12);
 
   Clamp.off();
   wait(0.5,seconds);
@@ -258,7 +260,7 @@ void Skill(){
 
   chassis.drive_settle_error = 2;
 
-  chassis.drive_to_pose(-60,18,180,0.5,4,9,12,12);
+  chassis.drive_to_pose(-59.5,18,180,0.5,4,9,12,12);
   chassis.drive_settle_time = 50;
   chassis.drive_timeout = 2500;
   chassis.turn_to_angle(270);
@@ -279,7 +281,7 @@ void Skill(){
   chassis.drive_settle_time = 250;
   chassis.drive_settle_error = 0.1;
   task Disk2(IntakeUntilDisk);
-  chassis.drive_to_pose(-56,53.5,0,0.5,4,0,9,9); // 54
+  chassis.drive_to_pose(-57.5,54.5,0,0.5,4,0,9,9); // 54
   chassis.drive_settle_error = 2.6;
   wait(0.3,seconds);
   Clamp.off();
@@ -338,7 +340,7 @@ void Skill(){
 
   // va chercher le disque random et le mets dans le alliance stake bleu
   Intake.spin(forward);
-  chassis.drive_to_pose(28,68,180,0.5,1,0,12,12);
+  /*chassis.drive_to_pose(28,68,180,0.5,1,0,12,12);
   Intake.stop();
   task disk4(IntakeUntilDisk);
   Clamp.off();
@@ -347,7 +349,9 @@ void Skill(){
   Intake.spin(forward);
   wait(0.3,seconds);
   chassis.turn_to_angle(90);
+  */
   chassis.drive_to_pose(64,110,90,0.5,1,12,12,12);
+  
 }
 
 // AWP Solo (7 pts) Rouge Côté Gauche
@@ -456,5 +460,47 @@ void Rouge_Droit_Rush_Goal(){
 
   //Intake.stop();
 }
+
+void RougeGaucheFinal(){
+
+  // va chercher le premier but
+  chassis.drive_settle_time = 120;
+  chassis.drive_distance(-22);
+  Clamp.off();
+  chassis.turn_settle_time = 50;
+  chassis.turn_to_angle(120);
+  chassis.drive_settle_time = 50;
+  // va chercher le premier disque
+
+  Intake.spin(forward);
+  chassis.drive_distance(23,115);
+  wait(0.5,seconds);
+  chassis.drive_distance(-18,120);
+
+  // va chercher le deuxième ring
+
+  chassis.turn_to_angle(60);
+  chassis.drive_distance(21,60);
+
+  // va chercher le 3ième disque
+
+  chassis.turn_to_angle(155);
+  chassis.drive_distance(18,155);
+  wait(0.3,seconds);
+  chassis.turn_to_angle(0);
+
+  // aller dans le coin blablbalblalblalba
+
+  chassis.drive_to_pose(15,12,20,0.6,1,9,12,12);
+  chassis.drive_distance(5,chassis.get_absolute_heading(),12,12,2.6,50,2000);
+  chassis.drive_settle_error = 0.5;
+  chassis.drive_distance(-1,chassis.get_absolute_heading(),12,12,2.6,50,2000);
+  chassis.drive_distance(7,chassis.get_absolute_heading(),12,12,2.6,50,2000);
+  wait(0.9,seconds);
+  chassis.drive_to_pose(-10,-38,180,0.5,1,12,12,12);
+};
+
+
+
 
 

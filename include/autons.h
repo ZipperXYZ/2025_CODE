@@ -23,5 +23,7 @@ void Rouge_Droit_Rush_Goal();
 
 void Skill();
 
+void RougeGaucheFinal();
+
 
 
