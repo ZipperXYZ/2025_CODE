@@ -150,6 +150,8 @@ void testauto(){
 
 void Skill(){
   //chassis.set_heading_constants(7,0.5,0.05,5.5,60);
+  MoteurBras.setVelocity(100,percent);
+  Intake_moteur.setVelocity(100,percent);
   chassis.set_heading_constants(7,0.5,0.005,6.6,10);
   chassis.drive_settle_time = 150;
   chassis.turn_settle_time = 150;
@@ -185,7 +187,7 @@ void Skill(){
 
   chassis.drive_to_pose(61.5,18,180,0.5,4,9,12,12);
   chassis.turn_to_angle(270);
-  chassis.drive_distance(12,270);
+  chassis.drive_distance(12,282);
   wait(0.3,seconds);
   chassis.drive_distance(-7,270);
   chassis.turn_to_angle(205);
@@ -202,8 +204,8 @@ void Skill(){
   chassis.drive_settle_error = 0.1;
   wait(0.2,seconds);
   task Disk(IntakeUntilDisk);
- // chassis.drive_to_point(57,56);
-  chassis.drive_to_pose(57.5,56.8,0,0.5,1,0,12,12); // 56
+  chassis.drive_to_point(46,30,12,12,12);
+  chassis.drive_to_pose(56.8,56.8,0,0.5,1,0,12,12); // 56
   //chassis.drive_to_pose(57,57,0,0.5,1,0,12,12);
   printf("pos X: %f pos y: %f",chassis.get_X_position(),chassis.get_Y_position());
   chassis.drive_settle_error = 2.6;
@@ -227,10 +229,10 @@ void Skill(){
   chassis.turn_to_angle(90);
   chassis.drive_settle_error = 0.5;
   chassis.drive_settle_time = 50;
-  chassis.drive_to_pose(-6.5,13.4,90,-0.5,16,0,12,12);
+  chassis.drive_to_pose(-3,13.4,90,-0.5,16,0,12,12);
   chassis.drive_settle_error = 3;
   chassis.drive_settle_time = 50;
-  chassis.drive_distance(-17.5,90,12,12);
+  chassis.drive_distance(-19,90,12,12);
 
   Clamp.off();
   wait(0.5,seconds);
@@ -281,7 +283,7 @@ void Skill(){
   chassis.drive_settle_time = 250;
   chassis.drive_settle_error = 0.1;
   task Disk2(IntakeUntilDisk);
-  chassis.drive_to_pose(-57.5,54.5,0,0.5,4,0,9,9); // 54
+  chassis.drive_to_pose(-56.5,54.5,0,0.5,4,0,9,9); // 54
   chassis.drive_settle_error = 2.6;
   wait(0.3,seconds);
   Clamp.off();
@@ -291,9 +293,9 @@ void Skill(){
   chassis.drive_timeout = 500;
   chassis.drive_distance(-12,270);
   Intake.stop();
-  wait(1,seconds);
+  wait(0.5,seconds);
   Intake.spin(forward);
-  wait(1,seconds);
+  wait(0.5,seconds);
   Intake.stop();
   Lift.on();
   chassis.drive_timeout = 3000;
@@ -454,7 +456,7 @@ void Rouge_Droit_Rush_Goal(){
   chassis.drive_distance(17,50);
   wait(0.6,seconds);
   chassis.turn_to_angle(270);
-  //chassis.drive_distance(-40,chassis.get_absolute_heading());
+  chassis.drive_to_pose(20,-45,180,0.5,-6,0,12,10);
 
 
 
@@ -499,6 +501,30 @@ void RougeGaucheFinal(){
   wait(0.9,seconds);
   chassis.drive_to_pose(-10,-38,180,0.5,1,12,12,12);
 };
+
+void RougeDroiteFinal(){
+
+  // va prendre le but
+
+  chassis.drive_settle_time = 120;
+  chassis.drive_distance(-24);
+  Clamp.off();
+  wait(0.2,seconds);
+  Intake.spin(forward);
+
+  // va chercher le premier disque
+  
+  chassis.turn_to_angle(290);
+  chassis.drive_distance(20);
+  chassis.turn_to_angle(0);
+
+  // va chercher les disque dans le coin
+  chassis.drive_to_pose(-14.5,5,50,0.5,1,8,12,12);
+  chassis.turn_to_angle(325);
+  chassis.drive_distance(17,325,12,12,2.6,50,2000);
+  chassis.drive_distance(-5,325,12,12,2.6,50,2000);
+  chassis.drive_distance(6,325,12,12,2.6,50,2000);
+}
 
 
 

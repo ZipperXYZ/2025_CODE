@@ -25,5 +25,7 @@ void Skill();
 
 void RougeGaucheFinal();
 
+void RougeDroiteFinal();
+
 
 

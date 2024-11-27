@@ -134,7 +134,7 @@ double TurnConstant = 1.5; // la distance en degrées que le moteur du bras va t
 double TurnPerTurn = 6; // the number of turn it takes for the motor to do 1 full revolution of the conveyor
 
 int SelectedAuto = 0; // bro si tu comprend pas ça ya des problème
-int NbOfAuto = 4;
+int NbOfAuto = 6;
 
 double Deadband = 20; // controller deadband 
 
@@ -204,6 +204,7 @@ int printPosition(){
       Brain.Screen.print("X pos: %f",chassis.get_X_position());
       Brain.Screen.setCursor(3, 1);
       Brain.Screen.print("Y pos: %f",chassis.get_Y_position());
+      Brain.Screen.printAt(40,90,"Auto: %d",SelectedAuto);
    }
    return 1;
 }
@@ -268,11 +269,10 @@ void update(){
 void BrainPressed(){
 
   SelectedAuto += 1;
-  
+  Brain.Screen.clearScreen();
   if (SelectedAuto > NbOfAuto) {
     SelectedAuto = 0;
   }
-  Brain.Screen.clearScreen();
   switch (SelectedAuto){
   case 0:
     Brain.Screen.printAt(4,90,"Selected: rouge gauche win point");
@@ -289,9 +289,16 @@ void BrainPressed(){
   case 4:
     Brain.Screen.printAt(4,90,"Selected: Skill");
     break;
+  case 5:
+    Brain.Screen.printAt(4,90,"Selected: rouge droite final");
+    break;
+  case 6:
+    Brain.Screen.printAt(4,90,"Selected: rouge gorge final");
+    break;
   default:
     break;
   }
+  printf("selected: %f",SelectedAuto);
 }
 
 void Autonomous(){
@@ -309,6 +316,10 @@ void Autonomous(){
     break;
   case 4:
     Skill();
+  case 5:
+    RougeDroiteFinal();
+  case 6:
+    RougeGaucheFinal();
   default:
     break;
   }
@@ -328,7 +339,7 @@ void PreAuto(){
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
-  Competition.autonomous(RougeGaucheFinal); // les 2 template de compétition
+  Competition.autonomous(Autonomous); // les 2 template de compétition
   Competition.drivercontrol(update);
 
   // les controle
@@ -359,7 +370,7 @@ int main() {
   // speed
 
   MoteurBras.setVelocity(100,percent);
-  Intake.setVelocity(100,percent);
+  Intake_moteur.setVelocity(100,percent);
 
 
   task print(printPosition);
