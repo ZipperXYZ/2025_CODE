@@ -127,6 +127,7 @@ bool auto_started = false;
 
 bool AutoEnabled = false;
 bool BrasUp = false;
+bool IsSkill = false;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -134,7 +135,7 @@ double TurnConstant = 1.5; // la distance en degrées que le moteur du bras va t
 double TurnPerTurn = 6; // the number of turn it takes for the motor to do 1 full revolution of the conveyor
 
 int SelectedAuto = 0; // bro si tu comprend pas ça ya des problème
-int NbOfAuto = 6;
+int NbOfAuto = 8;
 
 double Deadband = 20; // controller deadband 
 
@@ -204,7 +205,6 @@ int printPosition(){
       Brain.Screen.print("X pos: %f",chassis.get_X_position());
       Brain.Screen.setCursor(3, 1);
       Brain.Screen.print("Y pos: %f",chassis.get_Y_position());
-      Brain.Screen.printAt(40,90,"Auto: %d",SelectedAuto);
    }
    return 1;
 }
@@ -295,10 +295,15 @@ void BrainPressed(){
   case 6:
     Brain.Screen.printAt(4,90,"Selected: rouge gorge final");
     break;
+  case 7:
+    Brain.Screen.printAt(4,90,"Selected: un geai bleu communiste qui est en final (bleu gauche final)");
+    break;
+  case 8:
+    Brain.Screen.printAt(4,90,"Selected: bleu droite final");
+    break;
   default:
     break;
   }
-  printf("selected: %f",SelectedAuto);
 }
 
 void Autonomous(){
@@ -320,6 +325,10 @@ void Autonomous(){
     RougeDroiteFinal();
   case 6:
     RougeGaucheFinal();
+  case 7:
+    BleuGaucheFinal();
+  case 8:
+    BleuDroiteFinal();
   default:
     break;
   }
@@ -332,6 +341,7 @@ void PreAuto(){
   chassis.DriveR.resetPosition();
   chassis.R_SidewaysTracker.resetPosition();
   chassis.R_ForwardTracker.resetPosition();
+  Clamp.off();
   //chassis.set_coordinates(0,0,0);
 }
 
@@ -339,7 +349,7 @@ void PreAuto(){
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
-  Competition.autonomous(Autonomous); // les 2 template de compétition
+  Competition.autonomous(Skill2); // les 2 template de compétition
   Competition.drivercontrol(update);
 
   // les controle
