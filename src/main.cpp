@@ -146,7 +146,8 @@ double Deadband = 20; // controller deadband
 // le bras tourne de 1 position de crochet
 
 void ButtonUpPressed(){
-  MoteurBras.spinToPosition(MoteurBras.position(turns) + TurnConstant,turns,true);
+  IntakeUntilDisk();
+  //MoteurBras.spinToPosition(MoteurBras.position(turns) + TurnConstant,turns,true);
 }
 
 // stop les moteur du bras et de l'intake quand le boutton r1 est relaché
@@ -321,14 +322,19 @@ void Autonomous(){
     break;
   case 4:
     Skill();
+    break;
   case 5:
     RougeDroiteFinal();
+    break;
   case 6:
     RougeGaucheFinal();
+    break;
   case 7:
     BleuGaucheFinal();
+    break;
   case 8:
     BleuDroiteFinal();
+    break;
   default:
     break;
   }
@@ -349,7 +355,7 @@ void PreAuto(){
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
-  Competition.autonomous(Skill2); // les 2 template de compétition
+  Competition.autonomous(Autonomous); // les 2 template de compétition
   Competition.drivercontrol(update);
 
   // les controle

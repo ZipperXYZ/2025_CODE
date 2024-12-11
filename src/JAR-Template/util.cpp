@@ -240,12 +240,16 @@ int RedMinHUE = 7;
 int RedMaxHUE = 16;
 
 int BlueMinHUE = 200;
-int BlueMaxHUE = 200;
+int BlueMaxHUE = 220;
 
 int ChoosedMax;
 int ChoosedMin;
 
 int MaxTime = 3000;
+
+void SetTeam(int Nb){
+  Team = Nb;
+}
 
 int IntakeUntilDisk(){
   

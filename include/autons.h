@@ -33,5 +33,9 @@ void BleuDroiteFinal();
 
 void Skill2();
 
+void SignatureDroiteWinRouge();
+
+void SignatureGaucheWinRouge();
+
 
 
