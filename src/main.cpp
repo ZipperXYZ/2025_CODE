@@ -347,8 +347,7 @@ void PreAuto(){
   chassis.DriveR.resetPosition();
   chassis.R_SidewaysTracker.resetPosition();
   chassis.R_ForwardTracker.resetPosition();
-  Clamp.off();
-  //chassis.set_coordinates(0,0,0);
+  //chassis.set_coosrdinates(0,0,0);
 }
 
 // la fonction main qui gère: le reset des encodeur, les 2 fonction de competition et la tache d'update
