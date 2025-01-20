@@ -33,9 +33,18 @@ void BleuDroiteFinal();
 
 void Skill2();
 
+void Skill3();
+
 void SignatureDroiteWinRouge();
 
 void SignatureGaucheWinRouge();
+
+void UNUSEDProvincialRougeDroiteWP();
+
+void ProvRougeGaucheSoloWP();
+void ProvBleuDroitSoloWP();
+
+void ProvRougeDroiteSoloWP();
 
 
 

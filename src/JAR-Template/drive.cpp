@@ -268,7 +268,6 @@ void Drive::turn_to_angle(float angle, float turn_max_voltage, float turn_settle
   if (AngleReversed){
     angle = ReverseAngle(angle);
   }
-
   PID turnPID(reduce_negative_180_to_180(angle - get_absolute_heading()), turn_kp, turn_ki, turn_kd, turn_starti, turn_settle_error, turn_settle_time, turn_timeout);
   while( !turnPID.is_settled() ){
     float error = reduce_negative_180_to_180(angle - get_absolute_heading());
@@ -416,7 +415,7 @@ float Drive::get_SidewaysTracker_position(){
 void Drive::position_track(){
   while(1){
     odom.update_position(get_ForwardTracker_position(), get_SidewaysTracker_position(), get_absolute_heading());
-    task::sleep(1);
+    task::sleep(20);
   }
 }
 
@@ -507,7 +506,7 @@ void Drive::drive_to_point(float X_position, float Y_position, float drive_min_v
   bool prev_line_settled = is_line_settled(X_position, Y_position, start_angle_deg, get_X_position(), get_Y_position());
   while(!drivePID.is_settled()){
     line_settled = is_line_settled(X_position, Y_position, start_angle_deg, get_X_position(), get_Y_position());
-    if(line_settled && !prev_line_settled){ break; }
+    //if(line_settled && !prev_line_settled){ break; }
     prev_line_settled = line_settled;
 
     float drive_error = hypot(X_position-get_X_position(),Y_position-get_Y_position());
@@ -528,6 +527,11 @@ void Drive::drive_to_point(float X_position, float Y_position, float drive_min_v
 
     drive_with_voltage(left_voltage_scaling(drive_output, heading_output), right_voltage_scaling(drive_output, heading_output));
     task::sleep(10);
+  }
+
+  if (drive_min_voltage == 0) {
+    DriveL.stop();
+    DriveR.stop();
   }
 }
 

@@ -1,4 +1,5 @@
 #include "vex.h"
+//#include "util.h"
 
 /**
  * Converts an angle to an equivalent one in the range [0, 360).
@@ -231,6 +232,7 @@ bool IsBrasUp(){
   return !Lift.value();
 }
 
+bool Stop = false;
 
 // team 1 = red team 0 = blue
 
@@ -245,28 +247,85 @@ int BlueMaxHUE = 220;
 int ChoosedMax;
 int ChoosedMin;
 
+int UnwantedMax;
+int UnwantedMin;
+
+float WaitTime = 0.155;
+float ReverseWaitTime = 0.15;
 int MaxTime = 3000;
 
 void SetTeam(int Nb){
   Team = Nb;
 }
 
-int IntakeUntilDisk(){
+void StopIntake(){
+  Stop = true;
+}
+
+int IntakeUntilStop(){
   
   int Time = 0;
 
   if (Team == 1) {
     ChoosedMax = RedMaxHUE;
     ChoosedMin = RedMinHUE;
+    UnwantedMax = BlueMaxHUE;
+    UnwantedMin = BlueMinHUE;
   } else if (Team == 0) {
     ChoosedMax = BlueMaxHUE;
     ChoosedMin = BlueMinHUE;
+    UnwantedMax = RedMaxHUE;
+    UnwantedMin = RedMinHUE;
+  }
+
+  while (Stop != true)
+  {
+    if ((ColorSensor.hue() <= UnwantedMax && ColorSensor.hue() >= UnwantedMin)) {
+      wait(WaitTime,seconds);
+      Intake.spin(reverse);
+      wait(ReverseWaitTime,seconds);
+      Intake.spin(forward);
+    }
+
+    Intake.spin(forward);
+    Time += 20;
+    wait(20,msec);
+  }
+
+  Intake.stop();
+
+  Stop = false;
+  
+  return 1;
+}
+
+int IntakeUntilDisk(){
+
+  int Time = 0;
+
+  if (Team == 1) {
+    ChoosedMax = RedMaxHUE;
+    ChoosedMin = RedMinHUE;
+    UnwantedMax = BlueMaxHUE;
+    UnwantedMin = BlueMinHUE;
+  } else if (Team == 0) {
+    ChoosedMax = BlueMaxHUE;
+    ChoosedMin = BlueMinHUE;
+    UnwantedMax = RedMaxHUE;
+    UnwantedMin = RedMinHUE;
   }
 
   Brain.Screen.printAt(60,120,"running %f",ChoosedMax);
 
   while ((ColorSensor.hue() >= ChoosedMax || ColorSensor.hue() <= ChoosedMin) && Time < MaxTime)
   {
+    if ((ColorSensor.hue() <= UnwantedMax && ColorSensor.hue() >= UnwantedMin)) {
+      wait(WaitTime,seconds);
+      Intake.spin(reverse);
+      wait(ReverseWaitTime,seconds);
+      Intake.spin(forward);
+    }
+
     Intake.spin(forward);
     Time += 20;
     wait(20,msec);

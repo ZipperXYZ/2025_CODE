@@ -66,7 +66,7 @@ motor_group(leftMotorA,leftMotorB,leftMotorC),
 motor_group(rightMotorA,rightMotorB,rightMotorC),
 
 //Specify the PORT NUMBER of your inertial sensor, in PORT format (i.e. "PORT1", not simply "1"):
-PORT9,
+PORT13,
 
 //Input your wheel diameter. (4" omnis are actually closer to 4.125"):
 3.25,
@@ -100,7 +100,7 @@ PORT3,     -PORT4,
 //If you are using position tracking, this is the Forward Tracker port (the tracker which runs parallel to the direction of the chassis).
 //If this is a rotation sensor, enter it in "PORT1" format, inputting the port below.
 //If this is an encoder, enter the port as an integer. Triport A will be a "1", Triport B will be a "2", etc.
-PORT7,
+PORT14,
 
 //Input the Forward Tracker diameter (reverse it to make the direction switch):
 2.75,
@@ -111,7 +111,7 @@ PORT7,
 -0.25,
 
 //Input the Sideways Tracker Port, following the same steps as the Forward Tracker Port:
-PORT12,
+PORT10,
 
 //Sideways tracker diameter (reverse to make the direction switch):
 2.75,
@@ -217,6 +217,7 @@ int printPosition(){
 void update(){
   chassis.DriveL.setStopping(coast);
   chassis.DriveR.setStopping(coast);
+  StopIntake();
    while (true) {
     if (Competition.isEnabled()){
       if (Competition.isAutonomous()) {
@@ -347,6 +348,7 @@ void PreAuto(){
   chassis.DriveR.resetPosition();
   chassis.R_SidewaysTracker.resetPosition();
   chassis.R_ForwardTracker.resetPosition();
+  Clamp.off();
   //chassis.set_coosrdinates(0,0,0);
 }
 
@@ -354,11 +356,10 @@ void PreAuto(){
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
-  Competition.autonomous(Autonomous); // les 2 template de compétition
+  Competition.autonomous(Skill3); // les 2 template de compétition
   Competition.drivercontrol(update);
 
   // les controle
-
   Controller1.ButtonR2.pressed(ButtonR2Pressed);
   Controller1.ButtonL1.pressed(ButtonL1Pressed);
   Controller1.ButtonUp.pressed(ButtonUpPressed);
@@ -396,3 +397,4 @@ int main() {
   }
   //DriveX.movefor(24);
 }
+

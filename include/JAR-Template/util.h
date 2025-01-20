@@ -30,6 +30,10 @@ float clamp_min_voltage(float drive_output, float drive_min_voltage);
 
 float ReverseAngle(float angle);
 
+int IntakeUntilStop();
 int IntakeUntilDisk();
 
+void StopIntake();
+
 void SetTeam(int Nb);
+
