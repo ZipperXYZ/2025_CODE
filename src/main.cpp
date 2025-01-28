@@ -135,7 +135,7 @@ double TurnConstant = 1.5; // la distance en degrées que le moteur du bras va t
 double TurnPerTurn = 6; // the number of turn it takes for the motor to do 1 full revolution of the conveyor
 
 int SelectedAuto = 0; // bro si tu comprend pas ça ya des problème
-int NbOfAuto = 8;
+int NbOfAuto = 10;
 
 double Deadband = 20; // controller deadband 
 
@@ -146,7 +146,11 @@ double Deadband = 20; // controller deadband
 // le bras tourne de 1 position de crochet
 
 void ButtonUpPressed(){
-  IntakeUntilDisk();
+  /*StopIntake();
+  UnstopIntake();
+  SetTeam(0);
+  task Disk2(IntakeUntilStop);*/
+ // IntakeUntilDisk();
   //MoteurBras.spinToPosition(MoteurBras.position(turns) + TurnConstant,turns,true);
 }
 
@@ -170,8 +174,8 @@ void ButtonL1Pressed(){
   }
 }
 
-void ButtonXReleased(){
-  Intake_moteur.stop();
+void ButtonXPressed(){
+  Climb.set(!Climb.value());
 }
 
 // active la petite pince pour les but
@@ -217,7 +221,6 @@ int printPosition(){
 void update(){
   chassis.DriveL.setStopping(coast);
   chassis.DriveR.setStopping(coast);
-  StopIntake();
    while (true) {
     if (Competition.isEnabled()){
       if (Competition.isAutonomous()) {
@@ -240,10 +243,6 @@ void update(){
 
         if (ButtonSpinBrasPressed) {
           Intake.spin(reverse);
-        }
-
-        if (ButtonXPressed){
-          Intake_moteur.spin(forward);
         }
 
         if (ButtonDownPressed){
@@ -271,37 +270,56 @@ void update(){
 void BrainPressed(){
 
   SelectedAuto += 1;
-  Brain.Screen.clearScreen();
+  Controller1.Screen.clearLine(1);
+ // Controller1.Screen.clearScreen();
+  Controller1.Screen.setCursor(1,0);
   if (SelectedAuto > NbOfAuto) {
     SelectedAuto = 0;
   }
   switch (SelectedAuto){
   case 0:
+    Controller1.Screen.print("rouge gauche win point");
     Brain.Screen.printAt(4,90,"Selected: rouge gauche win point");
     break;
   case 1:
+    Controller1.Screen.print("rouge droite rush goal");
     Brain.Screen.printAt(4,90,"Selected: rouge droite rush goal");
     break;
   case 2:
+    Controller1.Screen.print("bleu droite win point");
     Brain.Screen.printAt(4,90,"Selected: bleu droite win point");
     break; 
   case 3:
+    Controller1.Screen.print("bleu gauche rush goal");
     Brain.Screen.printAt(4,90,"Selected: bleu gauche rush goal");
     break;
   case 4:
+    Controller1.Screen.print("Skill");
     Brain.Screen.printAt(4,90,"Selected: Skill");
     break;
   case 5:
+    Controller1.Screen.print("rouge droite final");
     Brain.Screen.printAt(4,90,"Selected: rouge droite final");
     break;
   case 6:
-    Brain.Screen.printAt(4,90,"Selected: rouge gorge final");
+    Controller1.Screen.print("rouge gorge final");
+    Brain.Screen.printAt(4,90,"Selected: rouge gorge (gauche) final");
     break;
   case 7:
+    Controller1.Screen.print("geai bleu communiste (gauche) final");
     Brain.Screen.printAt(4,90,"Selected: un geai bleu communiste qui est en final (bleu gauche final)");
     break;
   case 8:
+    Controller1.Screen.print("bleu droite final");
     Brain.Screen.printAt(4,90,"Selected: bleu droite final");
+    break;
+  case 9:
+    Controller1.Screen.print("ProvRougeGaucheSoloWP");
+    Brain.Screen.printAt(4,90,"Selected: ProvRougeGaucheSoloWP");
+    break;
+  case 10:
+    Controller1.Screen.print("ProvBleuDroitSoloWP");
+    Brain.Screen.printAt(4,90,"Selected: ProvBleuDroitSoloWP");
     break;
   default:
     break;
@@ -322,7 +340,7 @@ void Autonomous(){
     Bleu_Gauche_Rush_Goal();
     break;
   case 4:
-    Skill();
+    Skill2();
     break;
   case 5:
     RougeDroiteFinal();
@@ -335,6 +353,12 @@ void Autonomous(){
     break;
   case 8:
     BleuDroiteFinal();
+    break;
+  case 9:
+    ProvRougeGaucheSoloWP();
+    break;
+  case 10:
+    ProvBleuDroitSoloWP();
     break;
   default:
     break;
@@ -356,20 +380,22 @@ void PreAuto(){
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
-  Competition.autonomous(Skill3); // les 2 template de compétition
+  Competition.autonomous(SkillProv); // les 2 template de compétition
   Competition.drivercontrol(update);
 
   // les controle
   Controller1.ButtonR2.pressed(ButtonR2Pressed);
   Controller1.ButtonL1.pressed(ButtonL1Pressed);
   Controller1.ButtonUp.pressed(ButtonUpPressed);
+  Controller1.ButtonRight.pressed(BrainPressed);
   Controller1.ButtonB.pressed(ButtonBPressed);
+  Controller1.ButtonX.pressed(ButtonXPressed);
   Brain.Screen.pressed(BrainPressed);
 
   Controller1.ButtonR1.released(ButtonR1Released);
   Controller1.ButtonL2.released(ButtonL2Released);
   Controller1.ButtonDown.released(ButtonDownReleased);
-  Controller1.ButtonX.released(ButtonXReleased);
+ // Controller1.ButtonX.released(ButtonXReleased);
   ColorSensor.setLight(vex::ledState::on);
   ColorSensor.setLightPower(100,percent);
   // odometry stuff and PID

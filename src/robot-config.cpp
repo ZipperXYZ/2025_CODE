@@ -38,6 +38,7 @@ digital_out PneumaBut = digital_out(Brain.ThreeWirePort.D);*/
 led intake = led(Brain.ThreeWirePort.B);
 led Lift = led(Brain.ThreeWirePort.A);
 led Clamp = led(Brain.ThreeWirePort.B);
+led Climb = led(Brain.ThreeWirePort.C);
 
 motor MoteurBras = motor(PORT7,ratio6_1,false);
 motor Intake_moteur = motor(PORT8,ratio36_1,false);

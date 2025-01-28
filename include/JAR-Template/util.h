@@ -34,6 +34,8 @@ int IntakeUntilStop();
 int IntakeUntilDisk();
 
 void StopIntake();
+void UnstopIntake();
 
 void SetTeam(int Nb);
 
+int IntakeUntilDiskButWait(void *arg);

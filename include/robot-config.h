@@ -33,6 +33,7 @@ extern digital_out PneumaBut;*/
 extern led intake;
 extern led Lift;
 extern led Clamp;
+extern led Climb;
 
 extern motor Intake_moteur;
 extern motor MoteurBras;

@@ -46,5 +46,7 @@ void ProvBleuDroitSoloWP();
 
 void ProvRougeDroiteSoloWP();
 
+void SkillProv();
+
 
 
