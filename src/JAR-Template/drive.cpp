@@ -415,7 +415,10 @@ float Drive::get_SidewaysTracker_position(){
 void Drive::position_track(){
   while(1){
     odom.update_position(get_ForwardTracker_position(), get_SidewaysTracker_position(), get_absolute_heading());
-    task::sleep(20);
+      Controller1.Screen.clearLine(1);
+      Controller1.Screen.setCursor(1,0);
+      Controller1.Screen.print("X: %f, Y: %f",chassis.get_X_position(),chassis.get_Y_position());
+    task::sleep(5);
   }
 }
 

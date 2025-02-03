@@ -222,6 +222,7 @@ void update(){
   chassis.DriveL.setStopping(coast);
   chassis.DriveR.setStopping(coast);
    while (true) {
+
     if (Competition.isEnabled()){
       if (Competition.isAutonomous()) {
 
@@ -340,7 +341,7 @@ void Autonomous(){
     Bleu_Gauche_Rush_Goal();
     break;
   case 4:
-    Skill2();
+    SkillProv();
     break;
   case 5:
     RougeDroiteFinal();
