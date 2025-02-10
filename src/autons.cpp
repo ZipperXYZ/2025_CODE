@@ -95,7 +95,9 @@ void testauto(){
   chassis.set_turn_constants(7.4,0.18,0.005,1.6,30); 
   //chassis.set_turn_constants(12,0.19,0.013,1.2,4);
   chassis.set_heading_constants(12,0.24,0.001,4.3,4);
-  Clamp.on();
+  task Disk2(IntakeUntilStop);
+
+  /*Clamp.on();
   chassis.set_coordinates(-59,7,20);
   chassis.turn_to_angle(10);
 
@@ -105,7 +107,11 @@ void testauto(){
   chassis.drive_distance(70);
   chassis.turn_to_angle(270);
   chassis.drive_distance(-10);
-  Clamp.off();
+  Clamp.off();*/
+
+
+
+
   /*chassis.drive_distance(-100,0);
   chassis.turn_to_angle(270);
   chassis.set_heading(0);
@@ -1366,7 +1372,7 @@ void SkillProv(){
   //chassis.drive_to_point(-24,-24,0,12,8,2,200,3000,0.5,0.013,1.2,4,0.2,0,0,0); // 0.3
 
   // mettre le alliance stake et avancer et tourner vers le but
-
+  chassis.drive_timeout = 2800;
   Intake.spin(forward);
   wait(0.3,seconds);
   chassis.drive_settle_time = 0;
@@ -1393,8 +1399,8 @@ void SkillProv(){
 
   chassis.turn_to_angle(20);
   chassis.drive_distance(24,20,12,12);
-  wait(0.5,seconds);
-  chassis.drive_distance(-24,20,12,12);
+ // wait(0.5,seconds);
+  chassis.drive_distance(-25,20,12,12);
   //chassis.set_turn_constants(12,0.14,0.005,1.6,30); 
  // chassis.set_turn_constants(12,0.19,0.013,1.2,4);
  //  chassis.set_turn_constants(12,0.19,0.013,1.2,4);
@@ -1407,7 +1413,7 @@ void SkillProv(){
   // prendre le 4 ieme et 5 ring;
 
   chassis.drive_distance(29,180,6,12);
-  wait(0.5,seconds);
+  //wait(0.5,seconds);
 
   // prendre le 6 ieme ring
 
@@ -1416,16 +1422,16 @@ void SkillProv(){
   chassis.turn_to_angle(90);
   Intake.spin(forward);
   chassis.drive_distance(10,90,12,12);
-  wait(0.5,seconds);
+  wait(0.3,seconds);
 
   // mets le but dans le coin
 
   chassis.turn_to_angle(345);
   Clamp.on();
-  chassis.drive_distance(-12);
+  chassis.drive_distance(-16);
   Intake.spin(reverse);
   // va chercher l'autre but
-  chassis.drive_to_point(-5,15,0,10,12,2,200,3000,0.5,0.013,1.2,4,0.18,0.005,1.6,30);//0.2,0,0,0
+  chassis.drive_to_point(-5,13,0,10,12,2,200,3000,0.5,0.013,1.2,4,0.18,0.005,1.6,30);//0.2,0,0,0 // 15
  // chassis.drive_to_pose(0,15,270,0.5,1,0,12,12,2,200,3000,0.5,0.013,1.2,4,0.2,0,0,0);
  // chassis.drive_to_point(-4,17,0,12,12,2,200,3000,0.5,0.013,1.2,4,0.2,0,0,0);
   chassis.turn_to_angle(90);
@@ -1442,13 +1448,13 @@ void SkillProv(){
   chassis.drive_distance(27);
   chassis.turn_to_angle(346);
   chassis.drive_distance(24);
-  chassis.drive_distance(-24.5);
+  chassis.drive_distance(-25);
 
   // va chercher le troisieme et 4ieme disque
 
   chassis.turn_to_angle(180);
   chassis.drive_distance(29,180,6,12);
-  wait(0.5,seconds);
+  wait(0.3,seconds);
 
   // va chercher le 5 eme disque
   chassis.drive_distance(-12);
@@ -1473,7 +1479,7 @@ void SkillProv(){
   chassis.turn_to_angle(40);
   task testintae(IntakeUntilDisk);
   chassis.drive_distance(50);
-  chassis.turn_to_angle(220);
+  chassis.turn_to_angle(223);
 
   // va prendre le but
 
@@ -1481,7 +1487,7 @@ void SkillProv(){
   Clamp.off();
 
   // va chercher le ring au millieux
-  chassis.drive_distance(36);
+  chassis.drive_distance(34);
   chassis.turn_to_angle(120);
   double waittime = 0.6;
   task take2(IntakeButWait, (void *)&waittime);
@@ -1490,46 +1496,75 @@ void SkillProv(){
 
   // va chercher le 3ieme ring 
 
-  chassis.drive_distance(30);
+  chassis.drive_distance(34);
   chassis.turn_to_angle(270);
-  chassis.drive_distance(19);
+  chassis.drive_distance(29);
 
   task intakedisck(IntakeUntilStop);
 
   // va chercher le 4ieme et 5ieme disque
 
   chassis.turn_to_angle(0);
-  chassis.drive_distance(40,0,12,12);
-  chassis.drive_max_voltage = 12;
-
+  chassis.drive_distance(24,0,12,12);
+  chassis.drive_distance(-6,0,12,12);
+  chassis.turn_to_angle(20);
+  chassis.drive_distance(18);
+  /*chassis.drive_max_voltage = 12;
+  Intake.stop();
+  chassis.drive_distance(-12,0,12,12);
+  Intake.spin(forward);
+  chassis.drive_distance(12,0,12,12);
+  Intake.stop();
+  chassis.turn_to_angle(30);
+  Intake.spin(reverse);
+  chassis.drive_distance(12);
+  chassis.drive_distance(-12);
+  Intake.spin(forward);
+  chassis.turn_to_angle(0);
+  chassis.drive_distance(20);*/
   // va chercher le 6ieme dsque
 
-  chassis.turn_to_angle(220);
-  chassis.drive_distance(20);
 
   // va le mettre dans le coin
 
-  chassis.turn_to_angle(165);
+  chassis.turn_to_angle(125);
   Clamp.on();
-  chassis.drive_distance(-20);
+  chassis.drive_timeout = 700;
+  chassis.drive_distance(-22);
+  chassis.drive_timeout = 2500;
 
   // va chercher le alliance stake
-  StopIntake();
-
+// StopIntake();
+  //Intake.stop();
   Intake.spin(reverse);
   chassis.drive_distance(17);
   chassis.turn_to_angle(90);
-  chassis.drive_distance(60);
+  chassis.drive_distance(43);
+  StopIntake();
   chassis.turn_to_angle(135);
   Intake.stop();
 
   task intakeuntilxs(IntakeUntilDisk);
-
   chassis.drive_distance(34);
 
+  //chassis.turn_to_angle(150);
+  chassis.drive_distance(-38);
+  Clamp.off();
+  chassis.turn_to_angle(180);
+  chassis.drive_timeout = 800;
+  chassis.drive_distance(-30,180,6,12);
+  Intake.spin(forward);
+  wait(0.3,seconds);
+  chassis.drive_timeout = 2000;
 
+  // va mettre le but dans le bo magnifique coin raph arrete de regarder pls tu me gosse vraiment beaucoup je vais écrire un paragraphe si tu continue a laide
+// math 84 en fucking uautonome bruh
 
-
+  chassis.turn_to_angle(290);
+  Climb.set(!Climb.value());
+  chassis.drive_distance(-100,260);
+  chassis.drive_distance(20);
+  chassis.drive_distance(60,205,6,12);
 
 
 
@@ -1622,3 +1657,182 @@ void SkillProv(){
   //chassis.drive_to_pose(-45,75,240,0.5,1,0,12,12,2,200,3000,0.5,0.013,1.2,4,0.2,0,0,0);
   
 }
+
+void RushRougeProv()
+{
+  SetTeam(1);
+
+  chassis.set_drive_constants(12,0.5,0.05,1.8,4);
+  chassis.set_turn_constants(12,0.18,0.005,1.6,30); // percent = 7.4
+  chassis.set_heading_constants(12,0.24,0.001,4.3,4);
+
+  chassis.set_heading(180);
+  chassis.drive_settle_time = 0;
+  chassis.drive_distance(-46,205);
+  Clamp.off();
+  chassis.drive_distance(20,200);
+  double waittime = 0.5;
+  task tak3e(IntakeButWait, (void *)&waittime);
+  chassis.turn_to_angle(46);
+  chassis.drive_distance(15);
+
+  // deuxieme but
+
+  chassis.turn_to_angle(180);
+  Clamp.on();
+  wait(0.3,seconds);
+  chassis.turn_to_angle(80);
+  chassis.drive_distance(-28);
+  Clamp.off();
+
+  // 3ieme ring
+
+  chassis.turn_to_angle(220);
+  task Intaecolor(IntakeUntilDisk);
+  chassis.drive_distance(12);
+  chassis.turn_to_angle(270);
+  chassis.drive_distance(36);
+  
+
+  // 4ieme ring
+
+  chassis.turn_to_angle(290);
+  chassis.drive_distance(23);
+  wait(0.3,seconds);
+
+}
+
+void RushBleuProv()
+{
+  SetTeam(1);
+
+  chassis.set_drive_constants(12,0.5,0.05,1.8,4);
+  chassis.set_turn_constants(12,0.2,0.005,1.6,30); // percent = 7.4 P = 0.18
+  chassis.set_heading_constants(12,0.24,0.001,4.3,4);
+
+  chassis.set_heading(180);
+  chassis.drive_settle_time = 0;
+  //chassis.turn_settle_time = 100;
+  chassis.drive_distance(-45.5,160);
+  Clamp.off();
+  wait(0.1,seconds);
+  chassis.drive_distance(20,160);
+  double waittime = 0.5;
+  task tak3e(IntakeButWait, (void *)&waittime);
+  chassis.turn_to_angle(314);
+  chassis.drive_distance(15);
+
+  // deuxieme but
+
+  chassis.turn_to_angle(180);
+  Clamp.on();
+  wait(0.3,seconds);
+  chassis.turn_to_angle(285);
+  chassis.drive_distance(-28);
+  Clamp.off();
+
+  // 3ieme ring
+
+  chassis.turn_to_angle(180);
+  //task Intaecolor(IntakeUntilDisk);
+  Intake.stop();
+  Intake.spin(reverse);
+  chassis.drive_distance(32);
+  chassis.turn_settle_time = 100;
+  Climb.off();
+  chassis.turn_to_angle(98);
+  chassis.drive_distance(67);
+  
+
+  // 4ieme ring
+
+  chassis.turn_to_angle(0);
+  Intake.spin(forward);
+  chassis.drive_distance(48);
+
+  chassis.drive_distance(-24,90);
+
+}
+
+// alligné au milieux du robot coin de la tuile sur le standoff ligné
+
+void DroiteSaboRouge3()
+{
+  SetTeam(1);
+  chassis.set_heading(0);
+  chassis.set_drive_constants(12,0.5,0.05,1.8,4);
+  chassis.set_turn_constants(12,0.18,0.005,1.6,30); // percent = 7.4
+  chassis.set_heading_constants(12,0.24,0.001,4.3,4);
+
+  task Intakeuntidks(IntakeUntilDisk);
+
+  chassis.drive_distance(43);
+  chassis.drive_distance(-22,270);
+  Clamp.off();
+
+  //chassis.turn_to_angle(320);
+  task IntakeUntilStop532(IntakeUntilStop);
+  chassis.turn_to_angle(205);
+  chassis.drive_distance(30);
+  chassis.turn_to_angle(240);
+  chassis.drive_timeout = 1500;
+  chassis.drive_distance(24);
+  chassis.drive_timeout = 2500;
+  chassis.turn_to_angle(210);
+  chassis.drive_distance(-50);
+
+}
+
+
+void DroiteProvBleuREAL(){
+
+  SetTeam(0);
+  chassis.set_drive_constants(12,0.5,0.05,1.8,4);
+  chassis.set_turn_constants(12,0.2,0.005,1.6,30); // percent = 7.4 P = 0.18
+  chassis.set_heading_constants(12,0.24,0.001,4.3,4);
+  chassis.set_heading(159);
+  chassis.drive_distance(-20);
+  Clamp.off();
+  chassis.turn_to_angle(30);
+  Intake.spin(forward);
+  chassis.drive_to_pose(16,26.7,103,0.5,0.5,0,12,12,2,200,3000,0.5,0.013,1.5,4,0.2,0,4,0);
+
+  chassis.drive_distance(-25,30);
+  Clamp.on();
+
+
+  // 3ieme ring
+
+  chassis.turn_to_angle(103);
+  Intake.stop();
+  task awaitdisk(IntakeUntilDisk);
+  chassis.drive_distance(12);
+
+  // stake
+
+  chassis.turn_to_angle(184);
+  Climb.off();
+  chassis.drive_to_pose(-37,3,282,0.5,0.5,0,12,12,2,200,3000,0.5,0.013,1.5,4,0.2,0,4,0);
+
+  // but
+
+  chassis.drive_distance(12,0);
+  chassis.turn_to_angle(184);
+
+  chassis.drive_distance(-20);
+  Clamp.off();
+  chassis.turn_to_angle(282);
+  Intake.spin(forward);
+  chassis.drive_distance(20);
+  chassis.drive_distance(-36,220);
+
+  /*chassis.turn_to_angle(184);
+  chassis.drive_distance(34);
+  Climb.off();
+  chassis.turn_to_angle(278);
+  chassis.drive_distance(60,270);*/
+
+
+  //0.4,0.2,0,12,12,2,200,3000,0.5,0.013,1.5,4,0.2,0,4,0
+
+};

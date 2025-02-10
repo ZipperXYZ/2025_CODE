@@ -48,5 +48,10 @@ void ProvRougeDroiteSoloWP();
 
 void SkillProv();
 
+void RushRougeProv();
+void RushBleuProv();
 
+
+void DroiteSaboRouge3();
+void DroiteProvBleuREAL();
 

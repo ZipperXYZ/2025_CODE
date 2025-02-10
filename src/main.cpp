@@ -146,10 +146,10 @@ double Deadband = 20; // controller deadband
 // le bras tourne de 1 position de crochet
 
 void ButtonUpPressed(){
-  /*StopIntake();
+  StopIntake();
   UnstopIntake();
-  SetTeam(0);
-  task Disk2(IntakeUntilStop);*/
+  SetTeam(1);
+  task Disk2(IntakeUntilStop);
  // IntakeUntilDisk();
   //MoteurBras.spinToPosition(MoteurBras.position(turns) + TurnConstant,turns,true);
 }
@@ -214,6 +214,11 @@ int printPosition(){
    return 1;
 }
 
+int StopIntakeMatch(){
+  StopIntake();
+  return 1;
+}
+
 // la fonction update sert a updater toute les choses qui ont besoin d'être update en temps réelle.
 // elle update (si le mode autonome est activé) l'odometry du robot (la position en X et Y)
 // sinon elle va update les controlles du robot (les joystick et etc)
@@ -266,6 +271,11 @@ void update(){
     }
     wait(20,msec);
   }
+}
+
+void StartDriver(){
+  StopIntakeMatch();
+  update();
 }
 
 void BrainPressed(){
@@ -373,16 +383,16 @@ void PreAuto(){
   chassis.DriveR.resetPosition();
   chassis.R_SidewaysTracker.resetPosition();
   chassis.R_ForwardTracker.resetPosition();
-  Clamp.off();
-  //chassis.set_coosrdinates(0,0,0);
+  //Clamp.off();
+  //schassis.set_coosrdinates(0,0,0);
 }
 
 // la fonction main qui gère: le reset des encodeur, les 2 fonction de competition et la tache d'update
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
-  Competition.autonomous(SkillProv); // les 2 template de compétition
-  Competition.drivercontrol(update);
+  Competition.autonomous(DroiteProvBleuREAL); // les 2 template de compétition
+  Competition.drivercontrol(StartDriver);
 
   // les controle
   Controller1.ButtonR2.pressed(ButtonR2Pressed);

@@ -250,8 +250,8 @@ int ChoosedMin;
 int UnwantedMax;
 int UnwantedMin;
 
-float WaitTime = 0.09;//0.07;
-float ReverseWaitTime = 0.1;
+float WaitTime = 0.07;//0.07;
+float ReverseWaitTime = 0.08;
 int MaxTime = 4500;
 
 void SetTeam(int Nb){
